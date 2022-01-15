@@ -10,6 +10,8 @@ public class Entity
     private int entityData;
     protected double posX;
     protected double posY;
+    public double velX;
+    public double velY;
 
     public Entity() {}
 
@@ -21,6 +23,16 @@ public class Entity
 
     public void tick()
     {
+        if (velY <= 0.05 && velY >= -0.05)
+        {
+            velY = 0;
+        }
+        else
+        {
+            double dY = velY / Game.tick_frequency;
+            velY -= dY;
+            posY += dY;
+        }
         if (posX < 0)
             posX = 0;
 
@@ -34,9 +46,16 @@ public class Entity
             posY = world.height;
     }
 
-    public double getPosX()
+    public double getPosX(){return this.posX;}
+
+    public void setPosX(double posx)
     {
-        return this.posX;
+        this.posX = posx;
+    }
+
+    public void setPosY(double posy)
+    {
+        this.posY = posy;
     }
 
     public double getPosY()

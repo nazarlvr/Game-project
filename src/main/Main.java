@@ -4,6 +4,7 @@ import game.Game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 
 public class Main
 {
@@ -22,6 +23,7 @@ public class Main
 
         // setup our canvas size and put it into the content of the frame
         game = new Game();
+        container.addKeyListener(game);
 
         panel.add(game.renderWorld);
 

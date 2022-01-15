@@ -32,17 +32,14 @@ public class RenderWorld extends Canvas
         Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
         g.clearRect(0,0, getWidth(), getHeight());
 
+
         g.setFont(new Font("TimesRoman", Font.PLAIN, 26));
         g.drawString(Long.toString(world.getTime()),40,40);
 
         setBackground(Color.WHITE);
-        g.fillRect(130, 30,100, 80);
-        g.drawOval(30,130,50, 60);
         setForeground(Color.RED);
-        g.fillOval(130,130,50, 60);
-        g.drawArc(30, 200, 40,50,90,60);
-        g.fillArc(30, 130, 40,50,180,40);
 
+        g.drawImage(RenderEntity.loadTexture("player/Player.jpg"), 0, 0, 50, 50, null);
         final int xmin = 400, xmax = 800, ymin = 400, ymax = 600, dx = (xmax - xmin) / world.width, dy = (ymax - ymin) / world.height;
 
         for (int x = 0; x < world.width; ++x)
@@ -66,7 +63,7 @@ public class RenderWorld extends Canvas
             if (e != null)
             {
                 RenderEntity renderEntity = RenderManager.getRender(e);
-                renderEntity.render(g, (int) (xmin + e.getPosX() * dx), (int) (ymax - (e.getPosX() + 1) * dy));
+                renderEntity.render(g, (int) (xmin + e.getPosX() * dx), (int) (ymax - (e.getPosY() + 1) * dy));
             }
         }
 

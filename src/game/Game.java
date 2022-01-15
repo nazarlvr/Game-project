@@ -1,11 +1,14 @@
 package game;
 
+import entity.Entity;
 import render.RenderWorld;
 import world.World;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class Game
+public class Game implements KeyListener
 {
     /** True if the game is currently "running", i.e. the game loop is looping */
     public boolean gameRunning = true;
@@ -119,5 +122,37 @@ public class Game
             // a bad implementation of timer
             try { Thread.sleep(1000 / Game.tick_frequency); } catch (Exception e) {}
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if(e.getKeyChar()=='d' || e.getKeyChar()=='D')
+        {
+
+            Entity ent =(Entity)world.getEntities().toArray()[0];
+            ent.setPosX(ent.getPosX() + 1./Game.tick_frequency);
+        }
+
+        if(e.getKeyChar()=='w' || e.getKeyChar()=='W')
+        {
+            Entity ent =(Entity)world.getEntities().toArray()[0];
+            if (ent.velY == 0)
+            {
+                ent.velY += 1;
+            }
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyChar()=='a' || e.getKeyChar()=='A')
+        {
+            System.out.println("Huy1");
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 }

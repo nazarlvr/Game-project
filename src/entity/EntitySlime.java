@@ -11,9 +11,9 @@ public class EntitySlime extends Entity
 
     @Override
     public void tick() {
-        this.posX += 3 * (Math.random() - 0.5) / Game.tick_frequency;
-        this.posY += 3 * (Math.random() - 0.5) / Game.tick_frequency;
-
+        //this.posX += 3 * (Math.random() - 0.5) / Game.tick_frequency;
+        //this.posY += 3 * (Math.random() - 0.5) / Game.tick_frequency;
+        System.out.println(posX + " " + posY);
         super.tick();
     }
 }

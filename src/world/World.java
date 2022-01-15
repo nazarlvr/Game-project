@@ -24,7 +24,7 @@ public class World
         this.entities = new ArrayList<Entity>();
 
         this.blocks[0][0] = Blocks.dirt;
-        this.blocks[0][1] = Blocks.dirt;
+        this.blocks[0][1] = Blocks.coal;
         this.blocks[1][0] = Blocks.stone;
         this.blocks[1][1] = Blocks.dirt;
         this.blocks[1][2] = Blocks.grass;
