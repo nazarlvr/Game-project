@@ -15,6 +15,7 @@ public class World
     private Block[][] blocks;
     private long time;
     private ArrayList<Entity> entities;
+    public long timeStart;
 
     public World(String n)
     {

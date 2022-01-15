@@ -21,9 +21,60 @@ public class Entity
         posY = y;
     }
 
+    public void launchX(double v)
+    {
+        velX += v * Game.tick_frequency;
+    }
+
+    public void launchY(double v)
+    {
+        velY += v * Game.tick_frequency;
+    }
+
     public void tick()
     {
-        if (!world.isAirborne(this) && velY < 0)
+        if (world.isAirborne(this))
+        {
+            launchY(-0.005);
+            //if (velY > -velMax)
+            //{
+                //velY -= 9.8 / Game.tick_frequency;
+            //}
+        }
+        else
+        {
+            if (velY < 0)
+                velY = 0;
+
+            if (velX < 0)
+                launchX(0.01);
+            if (velX > 0)
+                launchX(-0.01);
+        }
+
+        if (velX >= -0.01 && velX <= 0.01)
+            velX = 0;
+
+        if (velY >= -0.01 && velY <= 0.01)
+            velY = 0;
+
+        if (velX > Game.velMax)
+            velX = Game.velMax;
+
+        if (velX < -Game.velMax)
+            velX = -Game.velMax;
+
+        if (velY > Game.velMax)
+            velY = Game.velMax;
+
+        if (velY < -Game.velMax)
+            velY = -Game.velMax;
+
+        posX += velX / Game.tick_frequency;
+        posY += velY / Game.tick_frequency;
+
+
+        /*if (!world.isAirborne(this) && velY < 0)
         {
             velY = 0;
         }
@@ -42,21 +93,21 @@ public class Entity
         if (world.isAirborne(this) && velY <= 0)
         {
             velY = -1;
-        }
+        }*/
 
         if (posX < 0)
-            posX = 0;
+            posX += world.width;
 
         if (posY < 0)
-            posY = 0;
+            posY += world.height;
 
         if (posX > world.width)
-            posX = world.width;
+            posX -= world.width;
 
         if (posY > world.height)
-            posY = world.height;
+            posY -= world.height;
 
-        if (posY - ((int)posY) <= 0.05 && velY <= 0)
+        if (posY - ((int)posY) <= Game.collisionPrecision && velY <= 0)
             posY = (int)posY;
     }
 

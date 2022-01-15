@@ -1,10 +1,12 @@
 package main;
 
 import game.Game;
+import org.w3c.dom.events.Event;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
 
 public class Main
 {
@@ -61,5 +63,7 @@ public class Main
         //initEntities();
 
         game.loop();
+
+        container.dispatchEvent(new WindowEvent(container, WindowEvent.WINDOW_CLOSING));
     }
 }

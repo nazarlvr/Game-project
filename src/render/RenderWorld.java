@@ -3,6 +3,7 @@ package render;
 import block.Block;
 import block.Blocks;
 import entity.Entity;
+import game.Game;
 import main.Main;
 import world.World;
 
@@ -29,17 +30,24 @@ public class RenderWorld extends Canvas
 
     public void render()
     {
+        long wt = world.getTime();
+        long at = (System.currentTimeMillis() - world.timeStart) / 1000;
+        double tf =  1.0 * wt / at;
+
         Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
         g.clearRect(0,0, getWidth(), getHeight());
 
 
         g.setFont(new Font("TimesRoman", Font.PLAIN, 26));
-        g.drawString(Long.toString(world.getTime()),40,40);
+        g.drawString("Ticks: " + wt,40,40);
+        g.drawString("Time: " + at, 60, 60);
+        g.drawString("Ticks per second: " + tf,80,80);
+
 
         setBackground(Color.WHITE);
         setForeground(Color.RED);
 
-        g.drawImage(RenderEntity.loadTexture("player/Player.jpg"), 0, 0, 50, 50, null);
+        //g.drawImage(RenderEntity.loadTexture("player/Player.jpg"), 0, 0, 50, 50, null);
         final int xmin = 200, xmax = 1200, ymin = 200, ymax = 700, dx = (xmax - xmin) / world.width, dy = (ymax - ymin) / world.height;
 
         for (int x = 0; x < world.width; ++x)

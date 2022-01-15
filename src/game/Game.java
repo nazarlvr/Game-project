@@ -9,18 +9,25 @@ import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.concurrent.TimeUnit;
 
-public class Game implements KeyListener
+public class Game implements KeyListener, MouseListener
 {
     /** True if the game is currently "running", i.e. the game loop is looping */
     public boolean gameRunning = true;
     public RenderWorld renderWorld;
     public World world;
-    public static final int tick_frequency = 20;
+    public static final int tick_frequency = 50;
+    public static final double collisionPrecision = 0.1;
+    public static final double velMax = collisionPrecision * Game.tick_frequency;
 
     public Game()
     {
+        //System.out.println(velMax);
         world = new World("World 1");
+        world.timeStart = System.currentTimeMillis();
         renderWorld = new RenderWorld(world);
         Dimension ss = Toolkit.getDefaultToolkit().getScreenSize();
         renderWorld.setBounds(0,0, ss.width, ss.height);
@@ -36,8 +43,8 @@ public class Game implements KeyListener
             // work out how long its been since the last update, this
             // will be used to calculate how far the entities should
             // move this loop
-            long delta = System.currentTimeMillis() - lastLoopTime;
-            lastLoopTime = System.currentTimeMillis();
+            //long delta = System.currentTimeMillis() - lastLoopTime;
+            lastLoopTime = System.nanoTime();
 
             // Get hold of a graphics context for the accelerated
             // surface and blank it out
@@ -122,45 +129,96 @@ public class Game implements KeyListener
             // finally pause for a bit. Note: this should run us at about
             // 100 fps but on windows this might vary each loop due to
             // a bad implementation of timer
-            try { Thread.sleep(1000 / Game.tick_frequency); } catch (Exception e) {}
+
+            long tickEnd = lastLoopTime + 1000000000 / Game.tick_frequency;
+            while (System.nanoTime() < tickEnd);
+
+            /*long tickDuration = System.currentTimeMillis() - lastLoopTime;
+
+            try
+            {
+                TimeUnit.MILLISECONDS.sleep(1000 / Game.tick_frequency - tickDuration);
+            }
+            catch (Exception e) {}*/
+
+            //System.out.println(System.currentTimeMillis() - lastLoopTime);
+            //System.out.println(1000 / Game.tick_frequency);
+
+
+            //try { Thread.sleep(1000 / Game.tick_frequency - tickDuration); } catch (Exception e) {}
         }
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if(e.getKeyChar()=='d' || e.getKeyChar()=='D')
-        {
 
-            Entity ent =(Entity)world.getEntities().toArray()[0];
-            ent.setPosX(ent.getPosX() + 1./Game.tick_frequency);
-        }
-
-        if(e.getKeyChar()=='a')
-        {
-
-            Entity ent =(Entity)world.getEntities().toArray()[0];
-            ent.setPosX(ent.getPosX() - 1./Game.tick_frequency);
-        }
-
-        if(e.getKeyChar()=='w' || e.getKeyChar()=='W')
-        {
-            Entity ent =(Entity)world.getEntities().toArray()[0];
-            System.out.println("Suka blyatb");
-
-            if (ent.velY == 0)
-            {
-                System.out.println("Suka hahui");
-                ent.velY += 1.2;
-            }
-        }
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e)
+    {
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+        {
+            gameRunning = false;
+            return;
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_W)
+        {
+            Entity ent =(Entity)world.getEntities().toArray()[0];
+            //System.out.println("Suka blyatb");
+
+            if (ent.velY == 0)
+            {
+                //System.out.println("Suka hahui");
+                ent.launchY(0.1);
+            }
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_A)
+        {
+            Entity ent =(Entity)world.getEntities().toArray()[0];
+            if (ent.velX >= -Game.velMax)
+                ent.launchX(-0.02);
+            //ent.setPosX(ent.getPosX() - 1./Game.tick_frequency);
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_D)
+        {
+            Entity ent =(Entity)world.getEntities().toArray()[0];
+            if (ent.velX <= Game.velMax)
+                ent.launchX(0.02);
+            //ent.setPosX(ent.getPosX() + 1./Game.tick_frequency);
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
 
     }
 }
