@@ -30,7 +30,8 @@ public class World
         this.blocks[1][2] = Blocks.grass;
         this.blocks[2][1] = Blocks.dirt;
         this.blocks[3][1] = Blocks.grass;
-        this.blocks[4][1] = Blocks.grass;
+        this.blocks[4][1] = Blocks.stone;
+        this.blocks[5][1] = Blocks.stone;
 
         for (int i = 0; i < this.width; ++i)
         {
