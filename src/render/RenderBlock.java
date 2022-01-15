@@ -6,17 +6,19 @@ import block.Blocks;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class RenderBlock {
-    private final Block block;
-    private final BufferedImage texture;
+public class RenderBlock
+{
+    protected final Block block;
+    protected BufferedImage texture;
 
-    public RenderBlock(Block b) {
-        block = b;
-        texture = Blocks.dirt_texture;
+    public RenderBlock(Block b)
+    {
+        this.block = b;
+        this.texture = Blocks.textures_map.get(b);
     }
 
     public void render(Graphics g, int x, int y, int w, int h)
     {
-        g.drawImage(texture, x, y, w, h, null);
+        g.drawImage(this.texture, x, y, w, h, null);
     }
 }

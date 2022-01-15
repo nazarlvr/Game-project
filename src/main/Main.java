@@ -23,7 +23,7 @@ public class Main
         // setup our canvas size and put it into the content of the frame
         game = new Game();
 
-        panel.add(game.renderGame);
+        panel.add(game.renderWorld);
 
         // Tell AWT not to bother repainting our canvas since we're
         // going to do that our self in accelerated mode
@@ -52,7 +52,7 @@ public class Main
 
         // create the buffering strategy which will allow AWT
         // to manage our accelerated graphics
-        game.renderGame.BS();
+        game.renderWorld.BS();
 
         // initialise the entities in our game so there's something
         // to see at startup

@@ -1,6 +1,7 @@
 package game;
 
-import render.RenderGame;
+import render.RenderWorld;
+import world.World;
 
 import java.awt.*;
 
@@ -8,14 +9,16 @@ public class Game
 {
     /** True if the game is currently "running", i.e. the game loop is looping */
     public boolean gameRunning = true;
-    public RenderGame renderGame;
+    public RenderWorld renderWorld;
+    public World world;
 
     public Game()
     {
-        renderGame = new RenderGame();
+        world = new World("World 1");
+        renderWorld = new RenderWorld(world);
         Dimension ss = Toolkit.getDefaultToolkit().getScreenSize();
-        renderGame.setBounds(0,0, ss.width, ss.height);
-        renderGame.setIgnoreRepaint(true);
+        renderWorld.setBounds(0,0, ss.width, ss.height);
+        renderWorld.setIgnoreRepaint(true);
     }
 
     public void loop()
@@ -32,7 +35,8 @@ public class Game
 
             // Get hold of a graphics context for the accelerated
             // surface and blank it out
-            renderGame.render();
+            world.tick();
+            renderWorld.render();
 
             // cycle round asking each entity to move itself
             /*if (!waitingForKeyPress) {
