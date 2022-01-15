@@ -28,7 +28,14 @@ public class World
         this.blocks[1][0] = Blocks.stone;
         this.blocks[1][1] = Blocks.dirt;
         this.blocks[1][2] = Blocks.grass;
+        this.blocks[2][1] = Blocks.dirt;
+        this.blocks[3][1] = Blocks.grass;
+        this.blocks[4][1] = Blocks.grass;
 
+        for (int i = 0; i < this.width; ++i)
+        {
+            this.blocks[i][0] = Blocks.stone;
+        }
         this.spawnEntity(new EntitySlime(5, 5));
     }
 
@@ -59,6 +66,10 @@ public class World
             e.world = this;
             entities.add(e);
         }
+    }
+    public boolean isAirborne(Entity entity)
+    {
+        return blocks[(int)entity.getPosX()][(int)entity.getPosY()] == null ;
     }
 
     public ArrayList<Entity> getEntities()

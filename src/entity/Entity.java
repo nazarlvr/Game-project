@@ -23,7 +23,11 @@ public class Entity
 
     public void tick()
     {
-        if (velY <= 0.05 && velY >= -0.05)
+        if (!world.isAirborne(this) && velY < 0)
+        {
+            velY = 0;
+        }
+        if (velY <= 0.01 && velY >= -0.01)
         {
             velY = 0;
         }
@@ -32,6 +36,10 @@ public class Entity
             double dY = velY / Game.tick_frequency;
             velY -= dY;
             posY += dY;
+        }
+        if (world.isAirborne(this) && velY <= 0)
+        {
+            velY = -9.8;
         }
         if (posX < 0)
             posX = 0;

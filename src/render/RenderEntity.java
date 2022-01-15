@@ -21,9 +21,9 @@ public class RenderEntity
         entity = e;
     }
 
-    public void render(Graphics g, int x, int y)
+    public void render(Graphics g, int x, int y, int z, int q)
     {
-        g.drawImage(this.texture, x, y, width, height, null);
+        g.drawImage(this.texture, x, y, width * z, height * q, null);
     }
 
     public static BufferedImage loadTexture(String filepath)
