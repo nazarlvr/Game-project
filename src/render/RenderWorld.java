@@ -2,11 +2,13 @@ package render;
 
 import block.Block;
 import block.Blocks;
+import entity.Entity;
 import main.Main;
 import world.World;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
 public class RenderWorld extends Canvas
 {
@@ -44,16 +46,30 @@ public class RenderWorld extends Canvas
         final int xmin = 400, xmax = 800, ymin = 400, ymax = 600, dx = (xmax - xmin) / world.width, dy = (ymax - ymin) / world.height;
 
         for (int x = 0; x < world.width; ++x)
+        {
             for (int y = 0; y < world.height; ++y)
             {
-                Block block = world.getBlock(x,y);
+                Block block = world.getBlock(x, y);
 
                 if (block != null)
                 {
-                    RenderBlock renderBlock = Blocks.getRender(block);
-                    renderBlock.render(g, xmin + x * dx, ymax - (y+1) * dy, dx, dy);
+                    RenderBlock renderBlock = RenderManager.getRender(block);
+                    renderBlock.render(g, xmin + x * dx, ymax - (y + 1) * dy, dx, dy);
                 }
             }
+        }
+
+        ArrayList<Entity> entities = world.getEntities();
+
+        for (Entity e : entities)
+        {
+            if (e != null)
+            {
+                RenderEntity renderEntity = RenderManager.getRender(e);
+                renderEntity.render(g, (int) (xmin + e.getPosX() * dx), (int) (ymax - (e.getPosX() + 1) * dy));
+            }
+        }
+
 
         g.drawLine(xmin, ymin, xmin, ymax);
         g.drawLine(xmin, ymin, xmax, ymin);

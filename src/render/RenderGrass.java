@@ -12,9 +12,9 @@ public class RenderGrass extends RenderBlock
         super(b);
 
         if (b.blockData == 0)
-            this.texture = Blocks.loadTexture("textures/grass_1.png");
+            this.texture = Blocks.loadTexture("grass_1.png");
         else
-            this.texture = Blocks.loadTexture("textures/grass_0.png");
+            this.texture = Blocks.loadTexture("grass_0.png");
     }
 
     @Override

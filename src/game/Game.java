@@ -11,6 +11,7 @@ public class Game
     public boolean gameRunning = true;
     public RenderWorld renderWorld;
     public World world;
+    public static final int tick_frequency = 20;
 
     public Game()
     {
@@ -116,7 +117,7 @@ public class Game
             // finally pause for a bit. Note: this should run us at about
             // 100 fps but on windows this might vary each loop due to
             // a bad implementation of timer
-            try { Thread.sleep(10); } catch (Exception e) {}
+            try { Thread.sleep(1000 / Game.tick_frequency); } catch (Exception e) {}
         }
     }
 }

@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class Blocks
 {
+    public static final String textures_path = "textures/blocks/";
     public static final Block dirt = new Block(1);
     public static final Block stone = new Block(2);
     public static final Block coal = new Block(3);
@@ -20,7 +21,7 @@ public class Blocks
     {
         BufferedImage image = null;
         try {
-            image = ImageIO.read(new File(filepath));
+            image = ImageIO.read(new File(textures_path + filepath));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,17 +30,9 @@ public class Blocks
     }
 
     public static final Map<Block, BufferedImage> textures_map = Map.ofEntries(
-            Map.entry(dirt, loadTexture("textures/dirt.png")),
-            Map.entry(stone, loadTexture("textures/stone.png")),
-            Map.entry(coal, loadTexture("textures/coal.png")),
-            Map.entry(grass, loadTexture("textures/grass_0.png"))
+            Map.entry(dirt, loadTexture("dirt.png")),
+            Map.entry(stone, loadTexture("stone.png")),
+            Map.entry(coal, loadTexture("coal.png")),
+            Map.entry(grass, loadTexture("grass_0.png"))
     );
-
-    public static RenderBlock getRender(Block b)
-    {
-        if (b.blockId == Blocks.grass.blockId)
-            return new RenderGrass(b);
-        else
-            return new RenderBlock(b);
-    }
 }
