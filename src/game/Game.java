@@ -4,6 +4,8 @@ import entity.Entity;
 import render.RenderWorld;
 import world.World;
 
+import javax.net.ssl.KeyManager;
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -133,22 +135,28 @@ public class Game implements KeyListener
             ent.setPosX(ent.getPosX() + 1./Game.tick_frequency);
         }
 
+        if(e.getKeyChar()=='a')
+        {
+
+            Entity ent =(Entity)world.getEntities().toArray()[0];
+            ent.setPosX(ent.getPosX() - 1./Game.tick_frequency);
+        }
+
         if(e.getKeyChar()=='w' || e.getKeyChar()=='W')
         {
             Entity ent =(Entity)world.getEntities().toArray()[0];
+            System.out.println("Suka blyatb");
+
             if (ent.velY == 0)
             {
-                ent.velY += 1;
+                System.out.println("Suka hahui");
+                ent.velY += 1.2;
             }
         }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyChar()=='a' || e.getKeyChar()=='A')
-        {
-            System.out.println("Huy1");
-        }
     }
 
     @Override

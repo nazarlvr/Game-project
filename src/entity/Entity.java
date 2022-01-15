@@ -27,6 +27,7 @@ public class Entity
         {
             velY = 0;
         }
+
         if (velY <= 0.01 && velY >= -0.01)
         {
             velY = 0;
@@ -37,10 +38,12 @@ public class Entity
             velY -= dY;
             posY += dY;
         }
+
         if (world.isAirborne(this) && velY <= 0)
         {
-            velY = -9.8;
+            velY = -1;
         }
+
         if (posX < 0)
             posX = 0;
 
@@ -52,6 +55,9 @@ public class Entity
 
         if (posY > world.height)
             posY = world.height;
+
+        if (posY - ((int)posY) <= 0.05 && velY <= 0)
+            posY = (int)posY;
     }
 
     public double getPosX(){return this.posX;}

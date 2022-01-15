@@ -36,7 +36,7 @@ public class World
         {
             this.blocks[i][0] = Blocks.stone;
         }
-        this.spawnEntity(new EntitySlime(5, 5));
+        this.spawnEntity(new EntitySlime(2.5, 7));
     }
 
     public void tick()
@@ -67,9 +67,27 @@ public class World
             entities.add(e);
         }
     }
+
+    public boolean isInt(double x)
+    {
+        int z = (int) x;
+
+        return (x-z) <= 0.05;
+    }
+
     public boolean isAirborne(Entity entity)
     {
-        return blocks[(int)entity.getPosX()][(int)entity.getPosY()] == null ;
+        double x = entity.getPosX(), y = entity.getPosY();
+
+        if ((int) y <= 0)
+            return false;
+
+        if (isInt(y))
+            return blocks[(int) x][(int) y - 1] == null;
+        else
+            return true;
+
+        //return blocks[(int)][(int)-1] == null ;
     }
 
     public ArrayList<Entity> getEntities()

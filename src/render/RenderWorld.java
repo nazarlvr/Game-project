@@ -40,7 +40,7 @@ public class RenderWorld extends Canvas
         setForeground(Color.RED);
 
         g.drawImage(RenderEntity.loadTexture("player/Player.jpg"), 0, 0, 50, 50, null);
-        final int xmin = 200, xmax = 1400, ymin = 200, ymax = 700, dx = (xmax - xmin) / world.width, dy = (ymax - ymin) / world.height;
+        final int xmin = 200, xmax = 1200, ymin = 200, ymax = 700, dx = (xmax - xmin) / world.width, dy = (ymax - ymin) / world.height;
 
         for (int x = 0; x < world.width; ++x)
         {
@@ -63,7 +63,7 @@ public class RenderWorld extends Canvas
             if (e != null)
             {
                 RenderEntity renderEntity = RenderManager.getRender(e);
-                renderEntity.render(g, (int) (xmin + e.getPosX() * dx), (int) (ymax - (e.getPosY() + 1) * dy), dx, dy);
+                renderEntity.render(g, (int) (xmin + e.getPosX() * dx - renderEntity.width * dx / 2), (int) (ymax - (e.getPosY() + 1) * dy /*+ renderEntity.height * dy*/), dx, dy);
             }
         }
 
