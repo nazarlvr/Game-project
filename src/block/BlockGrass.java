@@ -17,4 +17,18 @@ public class BlockGrass extends Block
 
         super.tick();
     }
+
+    @Override
+    public Block copy()
+    {
+        BlockGrass b = new BlockGrass(this.blockId);
+        b.blockData = this.blockData;
+        return b;
+    }
+
+    @Override
+    public boolean isCollideable()
+    {
+        return false;
+    }
 }

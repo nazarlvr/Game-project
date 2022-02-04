@@ -71,7 +71,7 @@ public class RenderWorld extends Canvas
             if (e != null)
             {
                 RenderEntity renderEntity = RenderManager.getRender(e);
-                renderEntity.render(g, (int) (xmin + e.getPosX() * dx - renderEntity.width * dx / 2), (int) (ymax - (e.getPosY() + 1) * dy /*+ renderEntity.height * dy*/), dx, dy);
+                renderEntity.render(g, (int) (xmin + e.getPosX() * dx - renderEntity.width * dx / 2), (int) (ymax - (e.getPosY() + 1) * dy + renderEntity.height * dy), dx, dy);
             }
         }
 

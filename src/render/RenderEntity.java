@@ -13,8 +13,8 @@ public class RenderEntity
     public static final String textures_path = "textures/entities/";
     protected final Entity entity;
     protected BufferedImage texture;
-    protected int width;
-    protected int height;
+    protected double width;
+    protected double height;
 
     public RenderEntity(Entity e)
     {
@@ -23,7 +23,8 @@ public class RenderEntity
 
     public void render(Graphics g, int x, int y, int z, int q)
     {
-        g.drawImage(this.texture, x, y, width * z, height * q, null);
+        g.drawString("" + this.entity.isAirborne, x, y);
+        g.drawImage(this.texture, x, y, (int)(width * z), (int)(height * q), null);
     }
 
     public static BufferedImage loadTexture(String filepath)

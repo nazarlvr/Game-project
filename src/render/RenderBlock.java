@@ -14,7 +14,7 @@ public class RenderBlock
     public RenderBlock(Block b)
     {
         this.block = b;
-        this.texture = Blocks.textures_map.get(b);
+        this.texture = Blocks.textures_map.get(b.blockId);
     }
 
     public void render(Graphics g, int x, int y, int w, int h)

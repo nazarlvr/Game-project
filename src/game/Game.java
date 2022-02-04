@@ -19,9 +19,11 @@ public class Game implements KeyListener, MouseListener
     public boolean gameRunning = true;
     public RenderWorld renderWorld;
     public World world;
-    public static final int tick_frequency = 50;
+    public static final int tick_frequency = 20;
     public static final double collisionPrecision = 0.1;
     public static final double velMax = collisionPrecision * Game.tick_frequency;
+
+    private boolean W_pressed, A_pressed, D_pressed, ESC_pressed;
 
     public Game()
     {
@@ -48,6 +50,9 @@ public class Game implements KeyListener, MouseListener
 
             // Get hold of a graphics context for the accelerated
             // surface and blank it out
+
+            //if ()
+            this.processKeyPresses();
             world.tick();
             renderWorld.render();
 
@@ -149,6 +154,35 @@ public class Game implements KeyListener, MouseListener
         }
     }
 
+    private void processKeyPresses()
+    {
+        if (this.ESC_pressed)
+        {
+            gameRunning = false;
+            return;
+        }
+
+        Entity ent =(Entity)world.getEntities().toArray()[0];
+
+        if (this.W_pressed)
+        {
+            if (ent.velY == 0)
+            {
+                ent.launchY(0.35);
+            }
+        }
+
+        if (this.A_pressed)
+        {
+            ent.launchX(-0.05);
+        }
+
+        if (this.D_pressed)
+        {
+            ent.launchX(0.05);
+        }
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -159,42 +193,47 @@ public class Game implements KeyListener, MouseListener
     {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
         {
-            gameRunning = false;
-            return;
+            this.ESC_pressed = true;
         }
 
         if(e.getKeyCode() == KeyEvent.VK_W)
         {
-            Entity ent =(Entity)world.getEntities().toArray()[0];
-            //System.out.println("Suka blyatb");
-
-            if (ent.velY == 0)
-            {
-                //System.out.println("Suka hahui");
-                ent.launchY(0.1);
-            }
+            this.W_pressed = true;
         }
 
         if(e.getKeyCode() == KeyEvent.VK_A)
         {
-            Entity ent =(Entity)world.getEntities().toArray()[0];
-            if (ent.velX >= -Game.velMax)
-                ent.launchX(-0.02);
-            //ent.setPosX(ent.getPosX() - 1./Game.tick_frequency);
+            this.A_pressed = true;
         }
 
         if(e.getKeyCode() == KeyEvent.VK_D)
         {
-            Entity ent =(Entity)world.getEntities().toArray()[0];
-            if (ent.velX <= Game.velMax)
-                ent.launchX(0.02);
-            //ent.setPosX(ent.getPosX() + 1./Game.tick_frequency);
+            this.D_pressed = true;
         }
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(KeyEvent e)
+    {
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+        {
+            this.ESC_pressed = false;
+        }
 
+        if(e.getKeyCode() == KeyEvent.VK_W)
+        {
+            this.W_pressed = false;
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_A)
+        {
+            this.A_pressed = false;
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_D)
+        {
+            this.D_pressed = false;
+        }
     }
 
     @Override

@@ -7,8 +7,8 @@ public class RenderSlime extends RenderEntity
     public RenderSlime(Entity e)
     {
         super(e);
-        this.width = 1;
-        this.height = 1;
+        this.width = e.getWidth();
+        this.height = e.getHeight();
         this.texture = RenderEntity.loadTexture("slime/slime.png");
     }
 }
