@@ -28,7 +28,7 @@ public class World
         this.entities = new ArrayList<Entity>();
 
 
-        this.spawnEntity(new EntitySlime(4.5, 2));
+        this.spawnEntity(new EntitySlime(18.5, 2));
         this.generateTerrain();
     }
 
@@ -55,14 +55,14 @@ public class World
 
         for (int i = 0; i < this.width; ++i)
         {
-            this.setBlock(i, 0, Blocks.bedrock);
-            this.setBlock(i, this.height - 1, Blocks.bedrock);
+            this.setBlock(i, 0, i % 2 == 0 ? Blocks.bedrock : Blocks.coal);
+            this.setBlock(i, this.height - 1, i % 2 == this.height  % 2 ? Blocks.bedrock : Blocks.coal);
         }
 
         for (int i = 0; i < this.height; ++i)
         {
-            this.setBlock(0, i, Blocks.bedrock);
-            this.setBlock(this.width - 1, i, Blocks.bedrock);
+            this.setBlock(0, i, i % 2 == 0 ? Blocks.bedrock : Blocks.coal);
+            this.setBlock(this.width - 1, i, i % 2 == this.width  % 2 ? Blocks.bedrock : Blocks.coal);
         }
 
         System.out.println("BD: " + this.getBlockData(3,1));
@@ -85,109 +85,8 @@ public class World
             }
 
         for (Entity e : entities)
-        {
             if (e != null)
-            {
-                boolean collided = true;
-
-                while (collided)
-                {
-                    e.aabb.posX = e.getPosX() - e.getWidth() / 2;
-                    e.aabb.posY = e.getPosY();
-                    e.aabb.width = e.getWidth();
-                    e.aabb.height = e.getHeight();
-                    e.isAirborne = true;
-                    collided = false;
-                    AABB vbb = e.aabb.copy();
-                    vbb.expand(e.getVelX(), e.getVelY());
-                    Vec2 vd = new Vec2(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
-                    AABB cbb = new AABB();
-
-                    System.out.println("Entity pos: " + e.getPosX() + " " + e.getPosY() + " vel: " + e.getVelX() + " " + e.getVelY());
-                    System.out.println("Entity AABB: " + e.aabb);
-                    System.out.println("Velocity AABB: " + vbb);
-
-                    for (int x = 0; x < width; ++x)
-                        for (int y = 0; y < height; ++y)
-                        {
-                            Block b = blocks[x][y];
-
-                            if (b != null && b.isCollideable())
-                            {
-                                if (b.getAABB().intersects(vbb))
-                                {
-                                    AABB block_bb = b.getAABB();
-                                    Vec2 vb = b.getAABB().vectorDistance(e.aabb, e.getVelVec2());
-                                    System.out.println("Velocity AABB " + " intersects " + b.getAABB());
-                                    System.out.println(vb);
-                                    //b.getAABB().printIntersectionPoints(e.aabb, e.getVelVec2());
-
-                                    /*System.out.println("p00: (" + e.aabb.point00().coordX + " " + e.aabb.point00().coordY + ") (" + e.aabb.point00().add(e.getVelVec2()).coordX + " " + e.aabb.point00().add(e.getVelVec2()).coordY + "):");
-                                    Vec2 i00 = Vec2.intersection_lines(block_bb.point01(), block_bb.point11(), e.aabb.point00(), e.aabb.point00().add(e.getVelVec2()));
-                                    if (i00 != null)
-                                        System.out.println(i00.coordX + " " + i00.coordY);
-                                    else
-                                        System.out.println("No intersection");
-                                    Vec2 i10 = Vec2.intersection(block_bb.point01(), block_bb.point11(), e.aabb.point10(), e.aabb.point10().add(e.getVelVec2()));
-                                    Vec2 i01 = Vec2.intersection(block_bb.point01(), block_bb.point11(), e.aabb.point01(), e.aabb.point01().add(e.getVelVec2()));
-                                    Vec2 i11 = Vec2.intersection(block_bb.point01(), block_bb.point11(), e.aabb.point11(), e.aabb.point11().add(e.getVelVec2()));
-
-                                    System.out.println("Intersections with (" + block_bb.point01().coordX + " " + block_bb.point01().coordY + ") (" + block_bb.point11().coordX + " " + block_bb.point11().coordY + "):");
-                                    if (i00 != null)
-                                        System.out.println("i00: " + i00.coordX + " " + i00.coordY);
-                                    if (i10 != null)
-                                        System.out.println("i10: " + i10.coordX + " " + i10.coordY);
-                                    if (i01 != null)
-                                        System.out.println("i01: " + i01.coordX + " " + i01.coordY);
-                                    if (i11 != null)
-                                        System.out.println("i11: " + i11.coordX + " " + i11.coordY);
-
-                                    System.out.println("Enity AABB x Block AABB: " + e.aabb.intersects(b.getAABB()));
-                                    System.out.println("Velocity AABB x Block AABB: " + vbb.intersects(b.getAABB()));
-                                    System.out.println("Block AABB: " + b.getAABB().posX + " " + b.getAABB().posY + " " + b.getAABB().width + " " + b.getAABB().height);
-                                    System.out.println("Distance vec2: " + vb.coordX + " " + vb.coordY);
-                                    System.out.println("VD: " + vd.coordX + " " + vd.coordY);*/
-
-                                    if (vb.coordX < vd.coordX || vb.coordY < vd.coordY)
-                                    {
-                                        collided = true;
-                                        cbb = b.getAABB();
-                                        vd = vb;
-                                    }
-                                }
-
-                                if (e.aabb.isStandingOnTop(b.getAABB()))
-                                {
-                                    System.out.println(e.aabb + " standing on top of " + b.getAABB());
-                                    e.isAirborne = false;
-                                }
-                            }
-                        }
-
-                    /*try {
-                        TimeUnit.MILLISECONDS.sleep(100);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }*/
-
-                    if (collided)
-                    {
-                        //System.out.println("Detected collision:");
-                        //System.out.println("Block AABB: " + cbb.posX + " " + cbb.posY + " " + cbb.width + " " + cbb.height);
-                        //System.out.println("VD: " + vd.coordX + " " + vd.coordY);
-
-                        if (vd.coordX < vd.coordY)
-                            e.processHorizontalCollision(cbb);
-                        else
-                            e.processVerticalCollision(cbb);
-                    }
-
-                    System.out.println("" + e.isAirborne);
-                }
-
                 e.tick();
-            }
-        }
 
 
         ++time;

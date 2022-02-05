@@ -43,6 +43,11 @@ public class Vec2
         return new Vec2(this.coordX - v.coordX, this.coordY - v.coordY);
     }
 
+    public Vec2 mul(double k)
+    {
+        return new Vec2(this.coordX * k, this.coordY * k);
+    }
+
     public double dot(Vec2 v)
     {
         return this.coordX * v.coordX + this.coordY * v.coordY;
@@ -63,17 +68,35 @@ public class Vec2
         return new Vec2(-this.coordX, -this.coordY);
     }
 
+    public Vec2 norm()
+    {
+        return this.mul(1 / this.len());
+    }
+
     public static Vec2 intersection_lines(Vec2 p1, Vec2 p2, Vec2 p3, Vec2 p4)
     {
-        double d = (p1.coordX - p2.coordX) * (p3.coordY - p4.coordY) - (p1.coordY - p2.coordY) * (p3.coordX - p4.coordX);
+        double d = (p1.coordX - p2.coordX) * (p3.coordY - p4.coordY);
+        double d0 = (p1.coordY - p2.coordY) * (p3.coordX - p4.coordX);
 
-        if (d == 0)
+        if (d == d0)
             return null;
         else
         {
-            double a = p1.coordX * p2.coordY - p1.coordY * p2.coordX;
+            d -= d0;
+
+            double t = (p1.coordX - p3.coordX) * (p3.coordY - p4.coordY) - (p1.coordY - p3.coordY) * (p3.coordX - p4.coordX);
+            double u = (p1.coordX - p3.coordX) * (p1.coordY - p2.coordY) - (p1.coordY - p3.coordY) * (p1.coordX - p2.coordX);
+
+            if (d < 0 && (t < d || u < d))
+                return null;
+
+            if (d > 0 && (t > d || u > d))
+                return null;
+
+            /*double a = p1.coordX * p2.coordY - p1.coordY * p2.coordX;
             double b = p3.coordX * p4.coordY - p3.coordY * p4.coordX;
-            Vec2 v = new Vec2((a * (p3.coordX - p4.coordX) - (p1.coordX - p2.coordX) * b) / d, (a * (p3.coordY - p4.coordY) - (p1.coordY - p2.coordY) * b) / d);
+            Vec2 v = new Vec2((a * (p3.coordX - p4.coordX) - (p1.coordX - p2.coordX) * b) / d, (a * (p3.coordY - p4.coordY) - (p1.coordY - p2.coordY) * b) / d);*/
+            Vec2 v = new Vec2(p1.coordX + t * (p2.coordX - p1.coordX) / d, p1.coordY + t * (p2.coordY - p1.coordY) / d);
             return v;
         }
     }

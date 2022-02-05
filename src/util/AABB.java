@@ -1,5 +1,10 @@
 package util;
 
+import game.Game;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class AABB
 {
     public double posX, posY, width, height;
@@ -132,33 +137,76 @@ public class AABB
         return x > this.posX && x < this.posX + this.width && y > this.posY && y < this.posY + this.height;
     }
 
-    public Vec2 vectorDistance(Vec2 p, Vec2 v)
+    public double distance(Vec2 p, Vec2 v)
     {
-        double dx = Double.POSITIVE_INFINITY;
-        double dy = Double.POSITIVE_INFINITY;
-
         Vec2 p0x = Vec2.intersection(p, p.add(v), this.point00(), this.point10());
         Vec2 pyx = Vec2.intersection(p, p.add(v), this.point01(), this.point11());
         Vec2 p0y = Vec2.intersection(p, p.add(v), this.point00(), this.point01());
         Vec2 pxy = Vec2.intersection(p, p.add(v), this.point10(), this.point11());
 
+        double d = Double.POSITIVE_INFINITY;
+
         if (p0x != null)
-            dy = Math.min(dy, p.sub(p0x).lensqr());
+            d = Math.min(d, p.sub(p0x).lensqr());
 
         if (pyx != null)
-            dy = Math.min(dy, p.sub(pyx).lensqr());
+            d = Math.min(d, p.sub(pyx).lensqr());
 
         if (p0y != null)
-            dx = Math.min(dx, p.sub(p0y).lensqr());
+            d = Math.min(d, p.sub(p0y).lensqr());
 
         if (pxy != null)
-            dx = Math.min(dx, p.sub(pxy).lensqr());
+            d = Math.min(d, p.sub(pxy).lensqr());
 
-        return new Vec2(Math.sqrt(dx), Math.sqrt(dy));
+        return Math.sqrt(d);
+    }
+
+    public double distance(AABB bb, Vec2 v)
+    {
+        return Math.min(
+                Math.min(
+                        Math.min(this.distance(bb.point00(), v),
+                                this.distance(bb.point10(), v)),
+                        Math.min(this.distance(bb.point01(), v),
+                                this.distance(bb.point11(), v))
+                ),
+                Math.min(
+                        Math.min(bb.distance(this.point00(), v.neg()),
+                                bb.distance(this.point10(), v.neg())),
+                        Math.min(bb.distance(this.point01(), v.neg()),
+                                bb.distance(this.point11(), v.neg()))
+                )
+        );
+    }
+
+    public Vec2 vectorDistance(Vec2 p, Vec2 v)
+    {
+        Vec2 c = new Vec2(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+        Vec2 p0x = Vec2.intersection(p, p.add(v), this.point00(), this.point10());
+        Vec2 pyx = Vec2.intersection(p, p.add(v), this.point01(), this.point11());
+        Vec2 p0y = Vec2.intersection(p, p.add(v), this.point00(), this.point01());
+        Vec2 pxy = Vec2.intersection(p, p.add(v), this.point10(), this.point11());
+
+        if (p0x != null && p.sub(p0x).lensqr() < c.lensqr())
+            c = p0x.sub(p);
+
+        if (pyx != null && p.sub(pyx).lensqr() < c.lensqr())
+            c = pyx.sub(p);
+
+        if (p0y != null && p.sub(p0y).lensqr() < c.lensqr())
+            c = p0y.sub(p);
+
+        if (pxy != null && p.sub(pxy).lensqr() < c.lensqr())
+            c = pxy.sub(p);
+
+        return c;
     }
 
     public Vec2 vectorDistance(AABB bb, Vec2 v)
     {
+        //Vec2 vmin = new Vec2(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+
+        Vec2 c = new Vec2(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
         Vec2 v00 = this.vectorDistance(bb.point00(), v);
         Vec2 v10 = this.vectorDistance(bb.point10(), v);
         Vec2 v01 = this.vectorDistance(bb.point01(), v);
@@ -169,8 +217,55 @@ public class AABB
         Vec2 b01 = bb.vectorDistance(this.point01(), v.neg());
         Vec2 b11 = bb.vectorDistance(this.point11(), v.neg());
 
-        return new Vec2(Math.min(Math.min(Math.min(v00.coordX, v10.coordX), Math.min(v01.coordX, v11.coordX)), Math.min(Math.min(b00.coordX, b10.coordX), Math.min(b01.coordX, b11.coordX))),
-                Math.min(Math.min(Math.min(v00.coordY, v10.coordY), Math.min(v01.coordY, v11.coordY)), Math.min(Math.min(b00.coordY, b10.coordY), Math.min(b01.coordY, b11.coordY))));
+        if (v00.lensqr() < c.lensqr())
+            c = v00;
+
+        if (v10.lensqr() < c.lensqr())
+            c = v10;
+
+        if (v01.lensqr() < c.lensqr())
+            c = v01;
+
+        if (v11.lensqr() < c.lensqr())
+            c = v11;
+
+        if (b00.lensqr() < c.lensqr())
+            c = b00;
+
+        if (b10.lensqr() < c.lensqr())
+            c = b10;
+
+        if (b01.lensqr() < c.lensqr())
+            c = b01;
+
+        if (b11.lensqr() < c.lensqr())
+            c = b11;
+
+        return c;
+
+        /*ArrayList<Vec2> vlist = new ArrayList<Vec2>();
+        vlist.add(v00);
+        vlist.add(v10);
+        vlist.add(v01);
+        vlist.add(v11);
+
+        vlist.add(b00);
+        vlist.add(b10);
+        vlist.add(b01);
+        vlist.add(b11);
+
+        for (Vec2 vi : vlist)
+        {
+            if (vmin.coordX == vmin.coordY)
+                if (vi.coordX <= vmin.coordX || vi.coordY <= vmin.coordY)
+                    vmin = vi;
+            else if (vi.coordX < vmin.coordX || vi.coordY < vmin.coordY)
+                vmin = vi;
+        }
+
+        return vmin;*/
+        /*return new Vec2(Math.min(Math.min(Math.min(v00.coordX, v10.coordX), Math.min(v01.coordX, v11.coordX)), Math.min(Math.min(b00.coordX, b10.coordX), Math.min(b01.coordX, b11.coordX))),
+                Math.min(Math.min(Math.min(v00.coordY, v10.coordY), Math.min(v01.coordY, v11.coordY)), Math.min(Math.min(b00.coordY, b10.coordY), Math.min(b01.coordY, b11.coordY))));*/
     }
 
     /*public void printIntersectionPoint(Vec2 p1, Vec2 p2, Vec2 p3, Vec2 p4, Vec2 p, boolean v)

@@ -20,7 +20,7 @@ public class Game implements KeyListener, MouseListener
     public RenderWorld renderWorld;
     public World world;
     public static final int tick_frequency = 20;
-    public static final double collisionPrecision = 0.1;
+    public static final double collisionPrecision = 1e-12;
     public static final double velMax = collisionPrecision * Game.tick_frequency;
 
     private boolean W_pressed, A_pressed, D_pressed, ESC_pressed;
