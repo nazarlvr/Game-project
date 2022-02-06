@@ -1,6 +1,7 @@
 package game;
 
 import entity.Entity;
+import entity.EntityPlayer;
 import render.RenderWorld;
 import world.World;
 
@@ -52,9 +53,10 @@ public class Game implements KeyListener, MouseListener
             // surface and blank it out
 
             //if ()
-            this.processKeyPresses();
+
             world.tick();
             renderWorld.render();
+            this.processKeyPresses();
 
             // cycle round asking each entity to move itself
             /*if (!waitingForKeyPress) {
@@ -162,24 +164,24 @@ public class Game implements KeyListener, MouseListener
             return;
         }
 
-        Entity ent =(Entity)world.getEntities().toArray()[0];
+        EntityPlayer player =(EntityPlayer)world.getEntities().toArray()[0];
 
         if (this.W_pressed)
         {
-            if (ent.velY == 0)
+            if (!player.isAirborne)
             {
-                ent.launchY(0.35);
+                player.launchY(0.42);
             }
         }
 
         if (this.A_pressed)
         {
-            ent.launchX(-0.05);
+            player.launchX(-0.05);
         }
 
         if (this.D_pressed)
         {
-            ent.launchX(0.05);
+            player.launchX(0.05);
         }
     }
 

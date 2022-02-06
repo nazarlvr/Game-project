@@ -90,13 +90,13 @@ public class AABB
 
     public boolean intersects(AABB bb)
     {
-        if (this.posX + this.width <= bb.posX)
+        if (MathHelper.round(this.posX + this.width) <= MathHelper.round(bb.posX))
             return false;
-        if (bb.posX + bb.width <= this.posX)
+        if (MathHelper.round(bb.posX + bb.width) <= MathHelper.round(this.posX))
             return false;
-        if (this.posY + this.height <= bb.posY)
+        if (MathHelper.round(this.posY + this.height) <= MathHelper.round(bb.posY))
             return false;
-        if (bb.posY + bb.height <= this.posY)
+        if (MathHelper.round(bb.posY + bb.height) <= MathHelper.round(this.posY))
             return false;
 
         return true;
@@ -124,12 +124,12 @@ public class AABB
 
     public boolean isStandingOnTop(AABB bb)
     {
-        if (this.posX + this.width <= bb.posX)
+        if (MathHelper.round(this.posX + this.width) <= MathHelper.round(bb.posX))
             return false;
-        if (bb.posX + bb.width <= this.posX)
+        if (MathHelper.round(bb.posX + bb.width) <= MathHelper.round(this.posX))
             return false;
 
-        return this.posY == bb.posY + bb.height;
+        return MathHelper.round(this.posY) == MathHelper.round(bb.posY + bb.height);
     }
 
     public boolean isInside(double x, double y)
@@ -137,12 +137,12 @@ public class AABB
         return x > this.posX && x < this.posX + this.width && y > this.posY && y < this.posY + this.height;
     }
 
-    public double distance(Vec2 p, Vec2 v)
+    /*public double distance(Vec2 p, Vec2 v)
     {
-        Vec2 p0x = Vec2.intersection(p, p.add(v), this.point00(), this.point10());
-        Vec2 pyx = Vec2.intersection(p, p.add(v), this.point01(), this.point11());
-        Vec2 p0y = Vec2.intersection(p, p.add(v), this.point00(), this.point01());
-        Vec2 pxy = Vec2.intersection(p, p.add(v), this.point10(), this.point11());
+        Vec2 p0x = Vec2.intersection_segments(p, p.add(v), this.point00(), this.point10());
+        Vec2 pyx = Vec2.intersection_segments(p, p.add(v), this.point01(), this.point11());
+        Vec2 p0y = Vec2.intersection_segments(p, p.add(v), this.point00(), this.point01());
+        Vec2 pxy = Vec2.intersection_segments(p, p.add(v), this.point10(), this.point11());
 
         double d = Double.POSITIVE_INFINITY;
 
@@ -177,15 +177,15 @@ public class AABB
                                 bb.distance(this.point11(), v.neg()))
                 )
         );
-    }
+    }*/
 
     public Vec2 vectorDistance(Vec2 p, Vec2 v)
     {
         Vec2 c = new Vec2(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
-        Vec2 p0x = Vec2.intersection(p, p.add(v), this.point00(), this.point10());
-        Vec2 pyx = Vec2.intersection(p, p.add(v), this.point01(), this.point11());
-        Vec2 p0y = Vec2.intersection(p, p.add(v), this.point00(), this.point01());
-        Vec2 pxy = Vec2.intersection(p, p.add(v), this.point10(), this.point11());
+        Vec2 p0x = Vec2.intersection_segments(p, p.add(v), this.point00(), this.point10());
+        Vec2 pyx = Vec2.intersection_segments(p, p.add(v), this.point01(), this.point11());
+        Vec2 p0y = Vec2.intersection_segments(p, p.add(v), this.point00(), this.point01());
+        Vec2 pxy = Vec2.intersection_segments(p, p.add(v), this.point10(), this.point11());
 
         if (p0x != null && p.sub(p0x).lensqr() < c.lensqr())
             c = p0x.sub(p);
@@ -199,6 +199,8 @@ public class AABB
         if (pxy != null && p.sub(pxy).lensqr() < c.lensqr())
             c = pxy.sub(p);
 
+        c.coordX = MathHelper.round(c.coordX);
+        c.coordY = MathHelper.round(c.coordY);
         return c;
     }
 

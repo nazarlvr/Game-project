@@ -1,10 +1,9 @@
 package render;
 
 import block.Block;
-import block.Blocks;
 import entity.Entity;
-import game.Game;
-import main.Main;
+import render.block.RenderBlock;
+import render.entity.RenderEntity;
 import world.World;
 
 import java.awt.*;
@@ -71,7 +70,7 @@ public class RenderWorld extends Canvas
             if (e != null)
             {
                 RenderEntity renderEntity = RenderManager.getRender(e);
-                renderEntity.render(g, (int) (xmin + e.getPosX() * dx - renderEntity.width * dx / 2), (int) (ymax - (e.getPosY() + 1) * dy + renderEntity.height * dy), dx, dy);
+                renderEntity.render(g, xmin + (int) ((e.getPosX() - renderEntity.getWidth() / 2) * dx), ymax - (int) ((e.getPosY() + renderEntity.getHeight()) * dy), dx, dy);
             }
         }
 

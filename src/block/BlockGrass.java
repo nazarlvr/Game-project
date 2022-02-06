@@ -1,7 +1,5 @@
 package block;
 
-import render.RenderGrass;
-
 public class BlockGrass extends Block
 {
     public BlockGrass(int id)

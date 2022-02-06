@@ -1,7 +1,8 @@
-package render;
+package render.block;
 
 import block.Block;
 import block.Blocks;
+import render.block.RenderBlock;
 
 import java.awt.*;
 
@@ -15,10 +16,5 @@ public class RenderGrass extends RenderBlock
             this.texture = Blocks.loadTexture("grass_1.png");
         else
             this.texture = Blocks.loadTexture("grass_0.png");
-    }
-
-    @Override
-    public void render(Graphics g, int x, int y, int w, int h) {
-        super.render(g, x, y, w, h);
     }
 }

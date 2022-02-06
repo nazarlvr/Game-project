@@ -3,6 +3,7 @@ package entity;
 import block.Block;
 import util.AABB;
 import game.Game;
+import util.MathHelper;
 import util.Vec2;
 import world.World;
 
@@ -59,10 +60,9 @@ public class Entity
         while (collided)
         {
             this.updateAABB();
-            this.isAirborne = true;
             collided = false;
             AABB vbb = this.getAABB();
-            vbb.expand(this.velX, this.velY);
+            vbb.expand(this.distX, this.distY);
             Vec2 d = new Vec2(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
             AABB cbb = new AABB();
 
@@ -81,7 +81,7 @@ public class Entity
                         {
                             AABB block_bb = b.getAABB();
                             Vec2 bd = b.getAABB().vectorDistance(this.aabb, this.getVelVec2());
-                            //System.out.println("Block " + b.getAABB() + " intersects VAABB " + vbb + " distance = " + bd);
+                            System.out.println("Block " + b.getAABB() + " intersects VAABB " + vbb + " distance = " + bd);
                             //b.getAABB().printIntersectionPoints(e.aabb, e.getVelVec2());
 
                             /*System.out.println("p00: " + this.aabb.point00() + " " + this.aabb.point00().add(this.getVelVec2()) + ":");
@@ -116,17 +116,10 @@ public class Entity
                                 d = bd;
                             }
                         }
-
-                        if (this.getAABB().isStandingOnTop(b.getAABB()))
-                        {
-                            //System.out.println(this.aabb + " standing on top of " + b.getAABB());
-                            this.isAirborne = false;
-                        }
                     }
                 }
 
-            if (collided)
-            {
+            if (collided) {
                         /*System.out.println("Detected collision:");
                         System.out.println("Block AABB: " + cbb.posX + " " + cbb.posY + " " + cbb.width + " " + cbb.height);
                         System.out.println("VD: " + vd.coordX + " " + vd.coordY);*/
@@ -143,9 +136,25 @@ public class Entity
                         else
                             e.processVerticalCollision(cbb);*/
             }
-
-            System.out.println("" + this.isAirborne);
         }
+    }
+
+    public void updateAirborneStatus()
+    {
+        this.updateAABB();
+        this.isAirborne = true;
+
+        for (int x = 0; x < this.world.width; ++x)
+            for (int y = 0; y < this.world.height; ++y)
+            {
+                Block b = this.world.getBlock(x, y);
+
+                if (b != null && b.isCollideable() && this.aabb.isStandingOnTop(b.getAABB()))
+                {
+                    this.isAirborne = false;
+                    return;
+                }
+            }
     }
 
     public void tick()
@@ -157,6 +166,45 @@ public class Entity
 
         posX += distX;
         posY += distY;
+
+        if (posX < 0)
+            posX = 0;
+
+        if (posY < 0)
+            posY = 0;
+
+        if (posX > world.width)
+            posX = world.width;
+
+        if (posY > world.height)
+            posY = world.height;
+
+        this.updateAirborneStatus();
+
+        if (this.isAirborne)
+        {
+            this.velY -= 0.08;
+            this.velY *= 0.98;
+            //if (velY > -velMax)
+            //{
+            //velY -= 9.8 / Game.tick_frequency;
+            //}
+        }
+        else
+        {
+            /*if (this.velY < 0)
+                this.velY = 0;*/
+        }
+
+        this.velX *= 0.85;
+        if (velX <= 0.01 && velX >= -0.01)
+        {
+            velX = 0;
+        }
+
+        this.velX = MathHelper.round(this.velX);
+        this.velY = MathHelper.round(this.velY);
+
         this.updateAABB();
 
 
@@ -181,58 +229,6 @@ public class Entity
             velY = -1;
         }*/
 
-        if (posX < 0)
-            posX = 0;
-
-        if (posY < 0)
-            posY = 0;
-
-        if (posX > world.width)
-            posX = world.width;
-
-        if (posY > world.height)
-            posY = world.height;
-
-        /*if (posY - ((int)posY) <= Game.collisionPrecision && velY <= 0)
-            posY = (int)posY;*/
-
-        if (this.isAirborne)
-        {
-            this.velY -= 0.08;
-            this.velY *= 0.98;
-            //if (velY > -velMax)
-            //{
-            //velY -= 9.8 / Game.tick_frequency;
-            //}
-        }
-        else
-        {
-            if (this.velY < 0)
-                this.velY = 0;
-
-            if (this.velX <= 0.01 && this.velX >= -0.01)
-                this.velX = 0;
-        }
-
-        this.velX *= 0.85;
-
-        /*if (velX >= -0.001 && velX <= 0.001)
-            velX = 0;
-
-        if (velY >= -0.001 && velY <= 0.001)
-            velY = 0;*/
-
-        /*if (velX > Game.velMax)
-            velX = Game.velMax;
-
-        if (velX < -Game.velMax)
-            velX = -Game.velMax;
-
-        if (velY > Game.velMax)
-            velY = Game.velMax;
-
-        if (velY < -Game.velMax)
-            velY = -Game.velMax;*/
     }
 
     public void processCollision(AABB bb, Vec2 v)
@@ -251,19 +247,64 @@ public class Entity
         this.distY -= dy;
         this.posX += dx;
         this.posY += dy;
+        this.posX = Math.round (this.posX * 10000.0) / 10000.0;
+        this.posY = Math.round (this.posY * 10000.0) / 10000.0;
         this.updateAABB();
+
+        /*if (this.aabb.posX + this.aabb.width <= bb.posX)
+        {
+            this.velX = 0;
+            this.distX = 0;
+            this.posX = bb.posX - this.width / 2;
+            System.out.println("Horizontal-");
+        }
+
+        if (bb.posX + bb.width <= this.aabb.posX)
+        {
+            this.velX = 0;
+            this.distX = 0;
+            this.posX = bb.posX + bb.width + this.width / 2;
+            System.out.println("Horizontal+");
+        }*/
 
         if (this.aabb.posX + this.aabb.width <= bb.posX || bb.posX + bb.width <= this.aabb.posX)
         {
             this.velX = 0;
             this.distX = 0;
+            System.out.println("Horizontal");
         }
 
         if (this.aabb.posY + this.aabb.height <= bb.posY || bb.posY + bb.height <= this.aabb.posY)
         {
             this.velY = 0;
             this.distY = 0;
+            System.out.println("Vertical");
         }
+
+        /*if (this.aabb.posX > bb.posX && this.aabb.posX < bb.posX + bb.width)
+        {
+            this.velX = 0;
+            this.distX = 0;
+            this.posX = bb.posX + bb.width + this.width / 2;
+            System.out.println(this.posX);
+            System.out.println(this.width / 2);
+            System.out.println(this.posX - this.width / 2);
+            System.out.println("Horizontal+");
+            this.updateAABB();
+        }
+
+        if (this.aabb.posX + this.aabb.width < bb.posX + bb.width && this.aabb.posX + this.aabb.width > bb.posX)
+        {
+            this.velX = 0;
+            this.distX = 0;
+            this.posX = bb.posX - this.width / 2;
+            System.out.println("Horizontal-");
+            this.updateAABB();
+        }*/
+
+
+
+        System.out.println(this.aabb);
     }
 
     /*public void processHorizontalCollision(AABB bb)
@@ -326,10 +367,10 @@ public class Entity
 
     public void updateAABB()
     {
-        this.aabb.posX = this.posX - this.width / 2;
-        this.aabb.posY = this.posY;
-        this.aabb.width = this.width;
-        this.aabb.height = this.height;
+        this.aabb.posX = MathHelper.round(this.posX - this.width / 2);
+        this.aabb.posY = MathHelper.round(this.posY);
+        this.aabb.width = MathHelper.round(this.width);
+        this.aabb.height = MathHelper.round(this.height);
     }
 
     public double getWidth()

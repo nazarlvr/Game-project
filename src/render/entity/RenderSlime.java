@@ -1,6 +1,7 @@
-package render;
+package render.entity;
 
 import entity.Entity;
+import render.entity.RenderEntity;
 
 public class RenderSlime extends RenderEntity
 {

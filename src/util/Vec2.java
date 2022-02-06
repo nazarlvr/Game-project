@@ -73,7 +73,7 @@ public class Vec2
         return this.mul(1 / this.len());
     }
 
-    public static Vec2 intersection_lines(Vec2 p1, Vec2 p2, Vec2 p3, Vec2 p4)
+    public static Vec2 intersection_segments(Vec2 p1, Vec2 p2, Vec2 p3, Vec2 p4)
     {
         double d = (p1.coordX - p2.coordX) * (p3.coordY - p4.coordY);
         double d0 = (p1.coordY - p2.coordY) * (p3.coordX - p4.coordX);
@@ -87,21 +87,36 @@ public class Vec2
             double t = (p1.coordX - p3.coordX) * (p3.coordY - p4.coordY) - (p1.coordY - p3.coordY) * (p3.coordX - p4.coordX);
             double u = (p1.coordX - p3.coordX) * (p1.coordY - p2.coordY) - (p1.coordY - p3.coordY) * (p1.coordX - p2.coordX);
 
-            if (d < 0 && (t < d || u < d))
+            if (d < 0 && (t < d || u < d || t > 0 || u > 0))
                 return null;
 
-            if (d > 0 && (t > d || u > d))
+            if (d > 0 && (t > d || u > d || t < 0 || u < 0))
                 return null;
 
             /*double a = p1.coordX * p2.coordY - p1.coordY * p2.coordX;
             double b = p3.coordX * p4.coordY - p3.coordY * p4.coordX;
             Vec2 v = new Vec2((a * (p3.coordX - p4.coordX) - (p1.coordX - p2.coordX) * b) / d, (a * (p3.coordY - p4.coordY) - (p1.coordY - p2.coordY) * b) / d);*/
-            Vec2 v = new Vec2(p1.coordX + t * (p2.coordX - p1.coordX) / d, p1.coordY + t * (p2.coordY - p1.coordY) / d);
+            Vec2 v = new Vec2();
+
+            if (p1.coordX == p2.coordX)
+                v.coordX = p1.coordX;
+            else if (p3.coordX == p4.coordX)
+                v.coordX = p3.coordX;
+            else
+                v.coordX = p1.coordX + t * (p2.coordX - p1.coordX) / d;
+
+            if (p1.coordY == p2.coordY)
+                v.coordY = p1.coordY;
+            else if (p3.coordY == p4.coordY)
+                v.coordY = p3.coordY;
+            else
+                v.coordY = p1.coordY + t * (p2.coordY - p1.coordY) / d;
+
             return v;
         }
     }
 
-    public boolean between(Vec2 p1, Vec2 p2)
+    /*public boolean between(Vec2 p1, Vec2 p2)
     {
         return Math.min(p1.coordX, p2.coordX) <= this.coordX && this.coordX <= Math.max(p1.coordX, p2.coordX) && Math.min(p1.coordY, p2.coordY) <= this.coordY && this.coordY <= Math.max(p1.coordY, p2.coordY);
     }
@@ -114,7 +129,7 @@ public class Vec2
             return v;
         else
             return null;
-    }
+    }*/
 
     /*public static void intersection_print(Vec2 p1, Vec2 p2, Vec2 p3, Vec2 p4)
     {

@@ -1,9 +1,18 @@
 package render;
 
 import block.Block;
+import block.BlockGrass;
+import block.BlockSlab;
 import block.Blocks;
 import entity.Entity;
+import entity.EntityPlayer;
 import entity.EntitySlime;
+import render.block.RenderBlock;
+import render.block.RenderGrass;
+import render.block.RenderSlab;
+import render.entity.RenderEntity;
+import render.entity.RenderPlayer;
+import render.entity.RenderSlime;
 
 public class RenderManager
 {
@@ -12,8 +21,10 @@ public class RenderManager
         if (b == null)
             return null;
 
-        if (b.blockId == Blocks.grass.blockId)
+        if (b instanceof BlockGrass)
             return new RenderGrass(b);
+        else if (b instanceof BlockSlab)
+            return new RenderSlab(b);
         else
             return new RenderBlock(b);
     }
@@ -25,6 +36,8 @@ public class RenderManager
 
         if (e instanceof EntitySlime)
             return new RenderSlime(e);
+        else if (e instanceof EntityPlayer)
+            return new RenderPlayer(e);
         else
             return new RenderEntity(e);
     }

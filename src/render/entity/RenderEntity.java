@@ -1,4 +1,4 @@
-package render;
+package render.entity;
 
 import entity.Entity;
 
@@ -21,10 +21,10 @@ public class RenderEntity
         entity = e;
     }
 
-    public void render(Graphics g, int x, int y, int z, int q)
+    public void render(Graphics g, int x, int y, int w, int h)
     {
         g.drawString("" + this.entity.isAirborne, x, y);
-        g.drawImage(this.texture, x, y, (int)(width * z), (int)(height * q), null);
+        g.drawImage(this.texture, x, y, (int)(width * w), (int)(height * h), null);
     }
 
     public static BufferedImage loadTexture(String filepath)
@@ -37,5 +37,15 @@ public class RenderEntity
         }
 
         return image;
+    }
+
+    public double getWidth()
+    {
+        return this.width;
+    }
+
+    public double getHeight()
+    {
+        return this.height;
     }
 }

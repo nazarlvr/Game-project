@@ -3,6 +3,7 @@ package world;
 import block.Block;
 import block.Blocks;
 import entity.Entity;
+import entity.EntityPlayer;
 import entity.EntitySlime;
 import util.AABB;
 import util.Vec2;
@@ -28,7 +29,8 @@ public class World
         this.entities = new ArrayList<Entity>();
 
 
-        this.spawnEntity(new EntitySlime(18.5, 2));
+        this.spawnEntity(new EntityPlayer(16.5, 4));
+        this.spawnEntity(new EntitySlime(5, 5));
         this.generateTerrain();
     }
 
@@ -39,19 +41,30 @@ public class World
         this.setBlock(1, 0, Blocks.stone);
         this.setBlock(1, 1, Blocks.dirt);
         this.setBlock(1, 2, Blocks.grass);
-        this.setBlock(2, 1, Blocks.dirt);
+        this.setBlock(2, 1, Blocks.stone_slab);
         this.setBlock(3, 1, Blocks.grass);
         this.setBlock(3, 5, Blocks.dirt);
         this.setBlock(4, 1, Blocks.stone);
         this.setBlock(5, 1, Blocks.stone);
         this.setBlock(5, 5, Blocks.dirt);
         this.setBlock(6, 4, Blocks.dirt);
-        this.setBlock(7, 2, Blocks.dirt);
+        //this.setBlock(7, 2, Blocks.dirt);
         this.setBlock(8, 3, Blocks.dirt);
         this.setBlock(9, 3, Blocks.dirt);
         this.setBlock(10, 3, Blocks.dirt);
         this.setBlock(9, 5, Blocks.dirt);
         this.setBlock(18, 1, Blocks.bedrock);
+        this.setBlock(17, 2, Blocks.bedrock);
+        this.setBlock(16, 3, Blocks.bedrock);
+        this.setBlock(15, 4, Blocks.bedrock);
+        this.setBlock(14, 5, Blocks.bedrock);
+        this.setBlock(13, 6, Blocks.bedrock);
+        this.setBlock(12, 6, Blocks.bedrock);
+        this.setBlock(11, 6, Blocks.bedrock);
+        this.setBlock(10, 6, Blocks.bedrock);
+        this.setBlock(9, 6, Blocks.bedrock);
+
+        //this.setBlock(16, 6, Blocks.bedrock);
 
         for (int i = 0; i < this.width; ++i)
         {

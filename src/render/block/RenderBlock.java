@@ -1,4 +1,4 @@
-package render;
+package render.block;
 
 import block.Block;
 import block.Blocks;
