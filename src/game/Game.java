@@ -6,6 +6,7 @@ import render.RenderWorld;
 import world.World;
 
 import javax.net.ssl.KeyManager;
+import javax.swing.*;
 import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -23,6 +24,7 @@ public class Game implements KeyListener, MouseListener
     public static final int tick_frequency = 20;
     public static final double collisionPrecision = 1e-12;
     public static final double velMax = collisionPrecision * Game.tick_frequency;
+    public JPanel panel;
 
     private boolean W_pressed, A_pressed, D_pressed, ESC_pressed;
 
@@ -43,6 +45,7 @@ public class Game implements KeyListener, MouseListener
 
         // keep looping round til the game ends
         while (gameRunning) {
+            panel.requestFocusInWindow();
             // work out how long its been since the last update, this
             // will be used to calculate how far the entities should
             // move this loop
