@@ -14,8 +14,8 @@ import java.util.concurrent.TimeUnit;
 public class World
 {
     private String name;
-    public static final int width = 20;
-    public static final int height = 10;
+    public static final int width = 40;
+    public static final int height = 20;
     private Block[][] blocks;
     private long time;
     private ArrayList<Entity> entities;
@@ -83,6 +83,20 @@ public class World
         System.out.println("BD: " + this.getBlockData(3,1));
     }
 
+
+    public void hit (double _x, double _y, int damage)
+    {
+        for (Entity ent : entities)
+        {
+            if (ent.getAABB().isInside(_x, _y))
+            {
+                ent.currentHP -= damage;
+                break;
+            }
+        }
+    }
+
+
     public void tick()
     {
         for (int x = 0; x < width; ++x)
@@ -99,8 +113,10 @@ public class World
 
         for (Entity e : entities)
             if (e != null)
+            {
                 e.tick();
-
+            }
+        entities.removeIf(x -> (x.isDead));
 
         ++time;
     }

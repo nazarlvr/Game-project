@@ -10,6 +10,7 @@ public class EntitySlime extends Entity
         super(x,y);
         this.width = 0.5;
         this.height = 0.5;
+        maxHP = 2;
     }
 
     @Override

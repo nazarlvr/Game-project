@@ -22,6 +22,7 @@ public class Game implements KeyListener, MouseListener
     public boolean gameRunning = true;
     public RenderWorld renderWorld;
     public World world;
+    public EntityPlayer player;
     public static final int tick_frequency = 20;
     public static final double collisionPrecision = 1e-12;
     public static final double velMax = collisionPrecision * Game.tick_frequency;
@@ -34,8 +35,16 @@ public class Game implements KeyListener, MouseListener
     {
         //System.out.println(velMax);
         world = new World("World 1");
+        for (Entity ent : world.getEntities())
+        {
+            if (ent instanceof EntityPlayer)
+            {
+                player = (EntityPlayer) ent;
+            }
+        }
         world.timeStart = System.currentTimeMillis();
         renderWorld = new RenderWorld(world);
+        renderWorld.game = this;
         Dimension ss = Toolkit.getDefaultToolkit().getScreenSize();
         renderWorld.setBounds(0,0, ss.width, ss.height);
         renderWorld.setIgnoreRepaint(true);
@@ -245,16 +254,14 @@ public class Game implements KeyListener, MouseListener
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        renderWorld.positionmX = e.getX();
-        renderWorld.positionmY = e.getY();
-        world.setBlock(renderWorld.blockcoordinatesX(e.getX()), renderWorld.blockcoordinatesY(e.getY()), null);
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         renderWorld.positionmX = e.getX();
         renderWorld.positionmY = e.getPoint().y;
-        world.setBlock(renderWorld.blockcoordinatesX(e.getX()), renderWorld.blockcoordinatesY(e.getY()), null);
+        world.hit(renderWorld.blockcoordinatesX(e.getX()), renderWorld.blockcoordinatesY(e.getY()), 1);
+        world.setBlock((int)renderWorld.blockcoordinatesX(e.getX()), (int)renderWorld.blockcoordinatesY(e.getY()), null);
     }
 
     @Override

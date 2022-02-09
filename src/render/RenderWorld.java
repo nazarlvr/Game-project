@@ -2,6 +2,7 @@ package render;
 
 import block.Block;
 import entity.Entity;
+import game.Game;
 import render.block.RenderBlock;
 import render.entity.RenderEntity;
 import util.Vec2;
@@ -15,21 +16,25 @@ public class RenderWorld extends Canvas
 {
     public BufferStrategy strategy;
     private World world;
+    public Game game;
     public int positionmX;
     public int positionmY;
-    final int xmin = 200, xmax = 1200, ymin = 200, ymax = 700, dx = (xmax - xmin) / world.width, dy = (ymax - ymin) / world.height;
+    final int xmin = 0, xmax = Toolkit.getDefaultToolkit().getScreenSize().width, ymin = 0, ymax = Toolkit.getDefaultToolkit().getScreenSize().height;
+    final int screenX = 20, screenY = 10;
+    final int dx = (xmax - xmin) / screenX, dy = (ymax - ymin) / screenY;
+    int startX, startY, finalX, finalY;
     public RenderWorld(World w)
     {
         super();
         world = w;
     }
-    public int blockcoordinatesX(int x)
+    public double blockcoordinatesX(double x)
     {
-        return (x - xmin) / dx;
+        return (x - xmin) / dx + startX;
     }
-    public int blockcoordinatesY(int y)
+    public double blockcoordinatesY(double y)
     {
-        return (ymax - y) / dy;
+        return (ymax - y) / dy + startY;
     }
     public void BS()
     {
@@ -59,17 +64,20 @@ public class RenderWorld extends Canvas
         //g.drawImage(RenderEntity.loadTexture("player/Player.jpg"), 0, 0, 50, 50, null);
 
         g.drawString("Mouse " + (positionmX-xmin)/dx + " " + (ymax-positionmY)/dy,100,100);
-
-        for (int x = 0; x < world.width; ++x)
+        startX = (int) Math.min(Math.max(0, (game.player.getPosX() - screenX/2)), world.width - screenX);
+        startY = (int) Math.min(Math.max(0, game.player.getPosY() - screenY/2), world.height - screenY);
+        finalX = startX + screenX;
+        finalY = startY + screenY;
+        for (int x = startX; x < finalX ; ++x)
         {
-            for (int y = 0; y < world.height; ++y)
+            for (int y = startY; y < finalY; ++y)
             {
                 Block block = world.getBlock(x, y);
 
                 if (block != null)
                 {
                     RenderBlock renderBlock = RenderManager.getRender(block);
-                    renderBlock.render(g, xmin + x * dx, ymax - (y + 1) * dy, dx, dy);
+                    renderBlock.render(g, xmin + (x - startX) * dx, ymax - ((y - startY) + 1) * dy, dx, dy);
                 }
             }
         }
@@ -78,10 +86,10 @@ public class RenderWorld extends Canvas
 
         for (Entity e : entities)
         {
-            if (e != null)
+            if (e != null && (e.getPosX() > startX)&&(e.getPosX() < startX + screenX)&& (e.getPosY() > startY)&&(e.getPosY() < startY + screenY))
             {
                 RenderEntity renderEntity = RenderManager.getRender(e);
-                renderEntity.render(g, xmin + (int) ((e.getPosX() - renderEntity.getWidth() / 2) * dx), ymax - (int) ((e.getPosY() + renderEntity.getHeight()) * dy), dx, dy);
+                renderEntity.render(g, xmin + (int) (((e.getPosX() - startX) - renderEntity.getWidth() / 2) * dx), ymax - (int) (((e.getPosY() - startY) + renderEntity.getHeight()) * dy), dx, dy);
             }
         }
 

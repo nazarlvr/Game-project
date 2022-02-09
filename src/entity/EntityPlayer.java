@@ -7,6 +7,7 @@ public class EntityPlayer extends Entity
         super(x,y);
         this.width = 0.8;
         this.height = 1.6;
+        maxHP = 20;
     }
 
     @Override

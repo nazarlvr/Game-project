@@ -24,6 +24,9 @@ public class Entity
     protected double distX;
     protected double distY;
     public boolean isAirborne;
+    public int maxHP;
+    public int currentHP;
+    public boolean isDead;
 
     public Entity() { }
 
@@ -51,6 +54,8 @@ public class Entity
         this.velY = 0;
         this.distX = 0;
         this.distY = 0;
+        this.isDead = false;
+        this.currentHP = maxHP;
     }
 
     public void checkCollisions()
@@ -159,6 +164,10 @@ public class Entity
 
     public void tick()
     {
+        if (currentHP <= 0)
+        {
+            isDead = true;
+        }
         this.distX = this.velX;
         this.distY = this.velY;
 
@@ -171,8 +180,10 @@ public class Entity
             posX = 0;
 
         if (posY < 0)
+        {
             posY = 0;
-
+            this.isDead = true;
+        }
         if (posX > world.width)
             posX = world.width;
 
