@@ -2,6 +2,7 @@ package render;
 
 import block.Block;
 import entity.Entity;
+import entity.EntityParticle;
 import game.Game;
 import render.block.RenderBlock;
 import render.entity.RenderEntity;
@@ -19,7 +20,7 @@ public class RenderWorld extends Canvas
     public Game game;
     public int positionmX;
     public int positionmY;
-    final int xmin = 0, xmax = Toolkit.getDefaultToolkit().getScreenSize().width, ymin = 0, ymax = Toolkit.getDefaultToolkit().getScreenSize().height;
+    final int xmin = 0, xmax = Toolkit.getDefaultToolkit().getScreenSize().width, ymin = 150, ymax = Toolkit.getDefaultToolkit().getScreenSize().height;
     final int screenX = 20, screenY = 10;
     final int dx = (xmax - xmin) / screenX, dy = (ymax - ymin) / screenY;
     int startX, startY, finalX, finalY;
@@ -86,7 +87,7 @@ public class RenderWorld extends Canvas
 
         for (Entity e : entities)
         {
-            if (e != null && (e.getPosX() > startX)&&(e.getPosX() < startX + screenX)&& (e.getPosY() > startY)&&(e.getPosY() < startY + screenY))
+            if (e != null && (e instanceof EntityParticle || ((e.getPosX() > startX)&&(e.getPosX() < startX + screenX)&& (e.getPosY() > startY)&&(e.getPosY() < startY + screenY))))
             {
                 RenderEntity renderEntity = RenderManager.getRender(e);
                 renderEntity.render(g, xmin + (int) (((e.getPosX() - startX) - renderEntity.getWidth() / 2) * dx), ymax - (int) (((e.getPosY() - startY) + renderEntity.getHeight()) * dy), dx, dy);

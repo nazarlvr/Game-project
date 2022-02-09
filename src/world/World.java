@@ -3,6 +3,7 @@ package world;
 import block.Block;
 import block.Blocks;
 import entity.Entity;
+import entity.EntityParticle;
 import entity.EntityPlayer;
 import entity.EntitySlime;
 import util.AABB;
@@ -111,12 +112,26 @@ public class World
 
             }
 
+        ArrayList<Entity> new_entities = new ArrayList<Entity>();
+
+        if (Math.random() < 1.0 / 50)
+            this.spawnEntity(new EntitySlime(5,5));
+
+
         for (Entity e : entities)
             if (e != null)
             {
                 e.tick();
+
+                if (e.isDead && !(e instanceof EntityParticle))
+                    new_entities.add(new EntityParticle(e.getPosX(), e.getPosY()));
             }
+
+
         entities.removeIf(x -> (x.isDead));
+        for (Entity e : new_entities)
+            this.spawnEntity(e);
+
 
         ++time;
     }

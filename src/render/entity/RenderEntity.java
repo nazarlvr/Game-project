@@ -23,7 +23,7 @@ public class RenderEntity
 
     public void render(Graphics g, int x, int y, int w, int h)
     {
-        g.drawString("" + this.entity.isAirborne, x, y);
+        //g.drawString("" + this.entity.isAirborne, x, y);
         g.drawImage(this.texture, x, y, (int)(width * w), (int)(height * h), null);
     }
 

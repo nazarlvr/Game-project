@@ -71,9 +71,9 @@ public class Entity
             Vec2 d = new Vec2(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
             AABB cbb = new AABB();
 
-            System.out.println("Entity pos: " + this.posX + " " + this.posY + " vel: " + this.velX + " " + this.velY);
-            System.out.println("Entity AABB: " + this.aabb);
-            System.out.println("Velocity AABB: " + vbb);
+            //System.out.println("Entity pos: " + this.posX + " " + this.posY + " vel: " + this.velX + " " + this.velY);
+            //System.out.println("Entity AABB: " + this.aabb);
+            //System.out.println("Velocity AABB: " + vbb);
 
             for (int x = 0; x < this.world.width; ++x)
                 for (int y = 0; y < this.world.height; ++y)
@@ -86,7 +86,7 @@ public class Entity
                         {
                             AABB block_bb = b.getAABB();
                             Vec2 bd = b.getAABB().vectorDistance(this.aabb, this.getVelVec2());
-                            System.out.println("Block " + b.getAABB() + " intersects VAABB " + vbb + " distance = " + bd);
+                            //System.out.println("Block " + b.getAABB() + " intersects VAABB " + vbb + " distance = " + bd);
                             //b.getAABB().printIntersectionPoints(e.aabb, e.getVelVec2());
 
                             /*System.out.println("p00: " + this.aabb.point00() + " " + this.aabb.point00().add(this.getVelVec2()) + ":");
@@ -247,9 +247,9 @@ public class Entity
         double dx = v.coordX;
         double dy = v.coordY;
 
-        System.out.println("Processing collision:");
-        System.out.println("Entity AABB: " + this.aabb);
-        System.out.println("Block AABB: " + bb);
+        //System.out.println("Processing collision:");
+        //System.out.println("Entity AABB: " + this.aabb);
+        //System.out.println("Block AABB: " + bb);
         //System.out.println("Distance: " + d);
         //System.out.println("a: " + Math.toDegrees(a));
         //System.out.println("dx, dy: " + dx + " " + dy);
@@ -282,14 +282,14 @@ public class Entity
         {
             this.velX = 0;
             this.distX = 0;
-            System.out.println("Horizontal");
+            //System.out.println("Horizontal");
         }
 
         if (this.aabb.posY + this.aabb.height <= bb.posY || bb.posY + bb.height <= this.aabb.posY)
         {
             this.velY = 0;
             this.distY = 0;
-            System.out.println("Vertical");
+            //System.out.println("Vertical");
         }
 
         /*if (this.aabb.posX > bb.posX && this.aabb.posX < bb.posX + bb.width)
@@ -315,7 +315,7 @@ public class Entity
 
 
 
-        System.out.println(this.aabb);
+        //System.out.println(this.aabb);
     }
 
     /*public void processHorizontalCollision(AABB bb)
