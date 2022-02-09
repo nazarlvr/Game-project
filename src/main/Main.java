@@ -25,9 +25,11 @@ public class Main
         game.panel = panel;
         panel.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
         panel.setLayout(null);
+        game.renderWorld.addMouseListener(game);
         panel.add(game.renderWorld);
 
         panel.addKeyListener(game);
+
         panel.addMouseListener(game);
         panel.setFocusable(true);
         container.pack();

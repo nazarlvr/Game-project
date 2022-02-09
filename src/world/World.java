@@ -150,8 +150,15 @@ public class World
 
     public void setBlock(int x, int y, Block b)
     {
-        blocks[x][y] = b.copy();
-        blocks[x][y].initAABB(x, y);
+        if (b == null)
+        {
+            blocks[x][y] = null;
+        }
+        else
+        {
+            blocks[x][y] = b.copy();
+            blocks[x][y].initAABB(x, y);
+        }
     }
 
     public int getBlockData(int x, int y)

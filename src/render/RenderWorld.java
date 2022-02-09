@@ -4,6 +4,7 @@ import block.Block;
 import entity.Entity;
 import render.block.RenderBlock;
 import render.entity.RenderEntity;
+import util.Vec2;
 import world.World;
 
 import java.awt.*;
@@ -14,13 +15,22 @@ public class RenderWorld extends Canvas
 {
     public BufferStrategy strategy;
     private World world;
-
+    public int positionmX;
+    public int positionmY;
+    final int xmin = 200, xmax = 1200, ymin = 200, ymax = 700, dx = (xmax - xmin) / world.width, dy = (ymax - ymin) / world.height;
     public RenderWorld(World w)
     {
         super();
         world = w;
     }
-
+    public int blockcoordinatesX(int x)
+    {
+        return (x - xmin) / dx;
+    }
+    public int blockcoordinatesY(int y)
+    {
+        return (ymax - y) / dy;
+    }
     public void BS()
     {
         createBufferStrategy(2);
@@ -47,7 +57,8 @@ public class RenderWorld extends Canvas
         setForeground(Color.RED);
 
         //g.drawImage(RenderEntity.loadTexture("player/Player.jpg"), 0, 0, 50, 50, null);
-        final int xmin = 200, xmax = 1200, ymin = 200, ymax = 700, dx = (xmax - xmin) / world.width, dy = (ymax - ymin) / world.height;
+
+        g.drawString("Mouse " + (positionmX-xmin)/dx + " " + (ymax-positionmY)/dy,100,100);
 
         for (int x = 0; x < world.width; ++x)
         {

@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseAdapter;
 import java.util.concurrent.TimeUnit;
 
 public class Game implements KeyListener, MouseListener
@@ -25,6 +26,7 @@ public class Game implements KeyListener, MouseListener
     public static final double collisionPrecision = 1e-12;
     public static final double velMax = collisionPrecision * Game.tick_frequency;
     public JPanel panel;
+
 
     private boolean W_pressed, A_pressed, D_pressed, ESC_pressed;
 
@@ -243,12 +245,16 @@ public class Game implements KeyListener, MouseListener
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        renderWorld.positionmX = e.getX();
+        renderWorld.positionmY = e.getY();
+        world.setBlock(renderWorld.blockcoordinatesX(e.getX()), renderWorld.blockcoordinatesY(e.getY()), null);
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        renderWorld.positionmX = e.getX();
+        renderWorld.positionmY = e.getPoint().y;
+        world.setBlock(renderWorld.blockcoordinatesX(e.getX()), renderWorld.blockcoordinatesY(e.getY()), null);
     }
 
     @Override
