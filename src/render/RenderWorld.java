@@ -3,6 +3,7 @@ package render;
 import block.Block;
 import entity.Entity;
 import entity.EntityParticle;
+import entity.EntityPlayer;
 import game.Game;
 import render.block.RenderBlock;
 import render.entity.RenderEntity;
@@ -20,10 +21,12 @@ public class RenderWorld extends Canvas
     public Game game;
     public int positionmX;
     public int positionmY;
+    public double playerX;
+    public double playerY;
     final int xmin = 0, xmax = Toolkit.getDefaultToolkit().getScreenSize().width, ymin = 150, ymax = Toolkit.getDefaultToolkit().getScreenSize().height;
     final int screenX = 20, screenY = 10;
     final int dx = (xmax - xmin) / screenX, dy = (ymax - ymin) / screenY;
-    int startX, startY, finalX, finalY;
+    double startX, startY, finalX, finalY;
     public RenderWorld(World w)
     {
         super();
@@ -43,8 +46,21 @@ public class RenderWorld extends Canvas
         strategy = getBufferStrategy();
     }
 
+    public void receivePlayerCoor()
+    {
+        for (Entity ent : this.world.getEntities()) {
+            if(ent instanceof EntityPlayer)
+            {
+                playerX = ent.getPosX();
+                playerY = ent.getPosY();
+                break;
+            }
+        }
+    }
+
     public void render()
     {
+        receivePlayerCoor();
         long wt = world.getTime();
         long at = (System.currentTimeMillis() - world.timeStart) / 1000;
         double tf =  1.0 * wt / at;
@@ -64,24 +80,29 @@ public class RenderWorld extends Canvas
 
         //g.drawImage(RenderEntity.loadTexture("player/Player.jpg"), 0, 0, 50, 50, null);
 
-        g.drawString("Mouse " + (positionmX-xmin)/dx + " " + (ymax-positionmY)/dy,100,100);
-        startX = (int) Math.min(Math.max(0, (game.player.getPosX() - screenX/2)), world.width - screenX);
-        startY = (int) Math.min(Math.max(0, game.player.getPosY() - screenY/2), world.height - screenY);
+        g.drawString("Mouse " + this.blockcoordinatesX(positionmX) + " " + this.blockcoordinatesY(positionmY),100,100);
+        startX = Math.min(Math.max(0, (playerX - screenX/2)), world.width - screenX);
+        startY = Math.min(Math.max(0, playerY - screenY/2), world.height - screenY);
         finalX = startX + screenX;
         finalY = startY + screenY;
-        for (int x = startX; x < finalX ; ++x)
+
+        g.clipRect(xmin, ymin, xmax, ymax);
+        //g.clipRect(0, 0, world.width, world.height);
+        for (int x = (int) Math.floor(startX); x < Math.ceil(finalX) ; ++x)
         {
-            for (int y = startY; y < finalY; ++y)
+            for (int y = (int) Math.floor(startY); y < Math.ceil(finalY); ++y)
             {
                 Block block = world.getBlock(x, y);
 
                 if (block != null)
                 {
                     RenderBlock renderBlock = RenderManager.getRender(block);
-                    renderBlock.render(g, xmin + (x - startX) * dx, ymax - ((y - startY) + 1) * dy, dx, dy);
+                    renderBlock.render(g, (int) (xmin + (x - startX) * dx), (int) (ymax - ((y - startY) + 1) * dy), dx, dy);
                 }
             }
         }
+        g.setClip(null);
+
 
         ArrayList<Entity> entities = world.getEntities();
 

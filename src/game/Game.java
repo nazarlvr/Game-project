@@ -35,13 +35,6 @@ public class Game implements KeyListener, MouseListener
     {
         //System.out.println(velMax);
         world = new World("World 1");
-        for (Entity ent : world.getEntities())
-        {
-            if (ent instanceof EntityPlayer)
-            {
-                player = (EntityPlayer) ent;
-            }
-        }
         world.timeStart = System.currentTimeMillis();
         renderWorld = new RenderWorld(world);
         renderWorld.game = this;
@@ -177,8 +170,14 @@ public class Game implements KeyListener, MouseListener
             gameRunning = false;
             return;
         }
+        if (player == null)
+        {
+            player = world.findPlayer();
+            if (player == null) return;
+        }
 
-        EntityPlayer player =(EntityPlayer)world.getEntities().toArray()[0];
+
+        //EntityPlayer player =(EntityPlayer)world.getEntities().toArray()[0];
 
         if (this.W_pressed)
         {

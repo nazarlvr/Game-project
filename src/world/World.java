@@ -21,6 +21,7 @@ public class World
     private long time;
     private ArrayList<Entity> entities;
     public long timeStart;
+    private ArrayList<Entity> futEntities;
 
     public World(String n)
     {
@@ -28,7 +29,7 @@ public class World
         this.time = 0;
         this.blocks = new Block[this.width][this.height];
         this.entities = new ArrayList<Entity>();
-
+        this.futEntities = new ArrayList<Entity>();
 
         this.spawnEntity(new EntityPlayer(16.5, 4));
         this.spawnEntity(new EntitySlime(5, 5));
@@ -97,9 +98,21 @@ public class World
         }
     }
 
+    public EntityPlayer findPlayer()
+    {
+        for (Entity ent : this.getEntities())
+        {
+            if (ent instanceof EntityPlayer)
+            {
+                return (EntityPlayer) ent;
+            }
+        }
+        return null;
+    }
 
     public void tick()
     {
+
         for (int x = 0; x < width; ++x)
             for (int y = 0; y < height; ++y)
             {
@@ -112,8 +125,6 @@ public class World
 
             }
 
-        ArrayList<Entity> new_entities = new ArrayList<Entity>();
-
         if (Math.random() < 1.0 / 50)
             this.spawnEntity(new EntitySlime(5,5));
 
@@ -124,25 +135,29 @@ public class World
                 e.tick();
 
                 if (e.isDead && !(e instanceof EntityParticle))
-                    new_entities.add(new EntityParticle(e.getPosX(), e.getPosY()));
+                {
+                    Entity ent = new EntityParticle(e.getPosX(), e.getPosY());
+                    this.spawnEntity(ent);
+                }
             }
 
 
         entities.removeIf(x -> (x.isDead));
-        for (Entity e : new_entities)
-            this.spawnEntity(e);
-
-
+        for (Entity e : futEntities)
+        {
+            e.world = this;
+            e.init();
+            entities.add(e);
+        }
         ++time;
+        futEntities = new ArrayList<Entity>();
     }
 
     public void spawnEntity(Entity e)
     {
         if (e != null)
         {
-            e.world = this;
-            e.init();
-            entities.add(e);
+            futEntities.add(e);
         }
     }
 

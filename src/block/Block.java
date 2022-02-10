@@ -17,7 +17,7 @@ public class Block
     public boolean equals(Object o)
     {
         if (o instanceof Block)
-            return ((Block) o).blockId == this.blockId;
+            return ((Block) o).blockId == this.blockId && ((Block) o).blockData == this.blockData;
         else
             return false;
     }
