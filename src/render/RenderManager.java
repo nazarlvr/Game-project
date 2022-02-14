@@ -3,11 +3,8 @@ package render;
 import block.Block;
 import block.BlockGrass;
 import block.BlockSlab;
-import block.Blocks;
-import entity.Entity;
-import entity.EntityParticle;
-import entity.EntityPlayer;
-import entity.EntitySlime;
+import entity.*;
+import entity.particle.EntityParticle;
 import render.block.RenderBlock;
 import render.block.RenderGrass;
 import render.block.RenderSlab;
@@ -15,9 +12,21 @@ import render.entity.RenderEntity;
 import render.entity.RenderParticle;
 import render.entity.RenderPlayer;
 import render.entity.RenderSlime;
+import render.entity.RenderItem;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RenderManager
 {
+    public static final String texture_path_entity = "textures/entities/";
+    public static final String texture_path_block = "textures/blocks/";
+    public static final String texture_path_item = "textures/items/";
+
     public static RenderBlock getRender(Block b)
     {
         if (b == null)
@@ -42,7 +51,49 @@ public class RenderManager
             return new RenderPlayer(e);
         else if (e instanceof EntityParticle)
             return new RenderParticle(e);
+        else if (e instanceof EntityItem)
+            return new RenderItem((EntityItem) e);
         else
             return new RenderEntity(e);
     }
+
+    public static BufferedImage loadTexture(String filepath)
+    {
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File(filepath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return image;
+    }
+
+    public static BufferedImage loadBlockTexture(String filepath)
+    {
+        return loadTexture(texture_path_block + filepath);
+    }
+
+    public static BufferedImage loadEntityTexture(String filepath)
+    {
+        return loadTexture(texture_path_entity + filepath);
+    }
+
+    public static BufferedImage loadItemTexture(String filepath)
+    {
+        return loadTexture(texture_path_item + filepath);
+    }
+
+    public static final Map<String, BufferedImage[]> texture_particle = Map.ofEntries(
+            Map.entry("poof", new BufferedImage[]{
+                    loadEntityTexture("particle/poof/poof_0.png"),
+                    loadEntityTexture("particle/poof/poof_1.png"),
+                    loadEntityTexture("particle/poof/poof_2.png"),
+                    loadEntityTexture("particle/poof/poof_3.png"),
+                    loadEntityTexture("particle/poof/poof_4.png"),
+                    loadEntityTexture("particle/poof/poof_5.png"),
+                    loadEntityTexture("particle/poof/poof_6.png"),
+                    loadEntityTexture("particle/poof/poof_7.png")
+            })
+    );
 }

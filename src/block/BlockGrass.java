@@ -1,5 +1,8 @@
 package block;
 
+import item.ItemStack;
+import item.Items;
+
 public class BlockGrass extends Block
 {
     public BlockGrass(int id)
@@ -24,8 +27,13 @@ public class BlockGrass extends Block
         return b;
     }
 
+    public ItemStack getDrop()
+    {
+        return new ItemStack(Items.beef, this.blockData == 0 ? 5 : 1);
+    }
+
     @Override
-    public boolean isCollideable()
+    public boolean isCollidable()
     {
         return false;
     }

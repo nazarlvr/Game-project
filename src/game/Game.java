@@ -1,7 +1,10 @@
 package game;
 
 import entity.Entity;
+import entity.EntityItem;
 import entity.EntityPlayer;
+import item.ItemStack;
+import item.Items;
 import render.RenderWorld;
 import world.World;
 
@@ -29,7 +32,7 @@ public class Game implements KeyListener, MouseListener
     public JPanel panel;
 
 
-    private boolean W_pressed, A_pressed, D_pressed, ESC_pressed;
+    private boolean W_pressed, A_pressed, D_pressed, R_pressed, ESC_pressed;
 
     public Game()
     {
@@ -170,31 +173,39 @@ public class Game implements KeyListener, MouseListener
             gameRunning = false;
             return;
         }
+
         if (player == null)
-        {
             player = world.findPlayer();
-            if (player == null) return;
-        }
 
-
-        //EntityPlayer player =(EntityPlayer)world.getEntities().toArray()[0];
-
-        if (this.W_pressed)
+        if (player != null)
         {
-            if (!player.isAirborne)
+            if (this.W_pressed)
             {
-                player.launchY(0.42);
+                if (!player.isAirborne)
+                {
+                    player.launchY(0.42);
+                }
             }
-        }
 
-        if (this.A_pressed)
-        {
-            player.launchX(-0.05);
-        }
+            if (this.A_pressed)
+            {
+                player.launchX(-0.05);
+            }
 
-        if (this.D_pressed)
+            if (this.D_pressed)
+            {
+                player.launchX(0.05);
+            }
+
+            if (player.isDead)
+                player = null;
+        }
+        else
         {
-            player.launchX(0.05);
+            if (this.R_pressed)
+            {
+                this.world.spawnEntity(new EntityPlayer(5,5));
+            }
         }
     }
 
@@ -225,6 +236,11 @@ public class Game implements KeyListener, MouseListener
         {
             this.D_pressed = true;
         }
+
+        if(e.getKeyCode() == KeyEvent.VK_R)
+        {
+            this.R_pressed = true;
+        }
     }
 
     @Override
@@ -249,6 +265,11 @@ public class Game implements KeyListener, MouseListener
         {
             this.D_pressed = false;
         }
+
+        if(e.getKeyCode() == KeyEvent.VK_R)
+        {
+            this.R_pressed = false;
+        }
     }
 
     @Override
@@ -259,8 +280,16 @@ public class Game implements KeyListener, MouseListener
     public void mousePressed(MouseEvent e) {
         renderWorld.positionmX = e.getX();
         renderWorld.positionmY = e.getPoint().y;
+
         world.hit(renderWorld.blockcoordinatesX(e.getX()), renderWorld.blockcoordinatesY(e.getY()), 1);
-        world.setBlock((int)renderWorld.blockcoordinatesX(e.getX()), (int)renderWorld.blockcoordinatesY(e.getY()), null);
+
+        int x = (int)renderWorld.blockcoordinatesX(e.getX());
+        int y = (int)renderWorld.blockcoordinatesY(e.getY());
+
+        if (world.getBlock(x, y) != null)
+        {
+            world.breakBlock(x, y);
+        }
     }
 
     @Override

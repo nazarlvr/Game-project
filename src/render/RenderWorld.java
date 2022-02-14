@@ -2,12 +2,11 @@ package render;
 
 import block.Block;
 import entity.Entity;
-import entity.EntityParticle;
+import entity.particle.EntityParticle;
 import entity.EntityPlayer;
 import game.Game;
 import render.block.RenderBlock;
 import render.entity.RenderEntity;
-import util.Vec2;
 import world.World;
 
 import java.awt.*;
@@ -75,7 +74,7 @@ public class RenderWorld extends Canvas
         g.drawString("Ticks per second: " + tf,80,80);
 
 
-        setBackground(Color.WHITE);
+        setBackground(Color.CYAN);
         setForeground(Color.RED);
 
         //g.drawImage(RenderEntity.loadTexture("player/Player.jpg"), 0, 0, 50, 50, null);
@@ -101,19 +100,28 @@ public class RenderWorld extends Canvas
                 }
             }
         }
-        g.setClip(null);
-
 
         ArrayList<Entity> entities = world.getEntities();
 
         for (Entity e : entities)
         {
-            if (e != null && (e instanceof EntityParticle || ((e.getPosX() > startX)&&(e.getPosX() < startX + screenX)&& (e.getPosY() > startY)&&(e.getPosY() < startY + screenY))))
+            if (e != null && !(e instanceof EntityParticle) /*&& ((e.getPosX() > startX)&&(e.getPosX() < startX + screenX)&& (e.getPosY() > startY)&&(e.getPosY() < startY + screenY))*/)
             {
                 RenderEntity renderEntity = RenderManager.getRender(e);
                 renderEntity.render(g, xmin + (int) (((e.getPosX() - startX) - renderEntity.getWidth() / 2) * dx), ymax - (int) (((e.getPosY() - startY) + renderEntity.getHeight()) * dy), dx, dy);
             }
         }
+
+        for (Entity e : entities)
+        {
+            if (e != null && e instanceof EntityParticle)
+            {
+                RenderEntity renderEntity = RenderManager.getRender(e);
+                renderEntity.render(g, xmin + (int) (((e.getPosX() - startX) - renderEntity.getWidth() / 2) * dx), ymax - (int) (((e.getPosY() - startY) + renderEntity.getHeight()) * dy), dx, dy);
+            }
+        }
+
+        g.setClip(null);
 
 
         g.drawLine(xmin, ymin, xmin, ymax);

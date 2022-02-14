@@ -2,13 +2,21 @@ package item;
 
 import block.Block;
 
-public class Item {
+public class Item
+{
     public final int itemId;
     public int itemData;
 
-    public Item(int itemId) {
+    public Item(int itemId, int itemData)
+    {
         this.itemId = itemId;
     }
+
+    public Item(int itemId)
+    {
+        this(itemId, 0);
+    }
+
     @Override
     public boolean equals(Object o)
     {
@@ -23,5 +31,10 @@ public class Item {
         Item b = new Item(this.itemId);
         b.itemData = this.itemData;
         return b;
+    }
+
+    public int getMaxStackSize()
+    {
+        return 5;
     }
 }

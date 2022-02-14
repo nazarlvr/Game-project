@@ -2,15 +2,12 @@ package world;
 
 import block.Block;
 import block.Blocks;
-import entity.Entity;
-import entity.EntityParticle;
-import entity.EntityPlayer;
-import entity.EntitySlime;
-import util.AABB;
-import util.Vec2;
+import entity.*;
+import entity.particle.EntityParticle;
+import entity.particle.EntityParticlePoof;
+import item.ItemStack;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class World
 {
@@ -134,10 +131,15 @@ public class World
             {
                 e.tick();
 
-                if (e.isDead && !(e instanceof EntityParticle))
+                if (e.isDead)
                 {
-                    Entity ent = new EntityParticle(e.getPosX(), e.getPosY());
-                    this.spawnEntity(ent);
+                    if (!(e instanceof EntityParticle))
+                        this.spawnEntity(new EntityParticlePoof(e.getPosX(), e.getPosY() + e.getHeight() / 2));
+
+                    ItemStack d = e.getDrop();
+
+                    if (d != null)
+                        this.spawnEntity(new EntityItem(e.getPosX(), e.getPosY() + e.getHeight() / 2, d));
                 }
             }
 
@@ -220,5 +222,16 @@ public class World
     public long getTime()
     {
         return time;
+    }
+
+    public void breakBlock(int x, int y)
+    {
+        Block b = this.getBlock(x, y);
+
+        if (b != null)
+        {
+            this.setBlock(x, y, null);
+            b.breakBlock(this, x, y);
+        }
     }
 }

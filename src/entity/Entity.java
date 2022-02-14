@@ -1,13 +1,11 @@
 package entity;
 
 import block.Block;
+import item.ItemStack;
 import util.AABB;
-import game.Game;
 import util.MathHelper;
 import util.Vec2;
 import world.World;
-
-import java.util.concurrent.TimeUnit;
 
 public class Entity
 {
@@ -60,34 +58,36 @@ public class Entity
 
     public void checkCollisions()
     {
-        boolean collided = true;
-
-        while (collided)
+        if (this.isBlockCollidable())
         {
-            this.updateAABB();
-            collided = false;
-            AABB vbb = this.getAABB();
-            vbb.expand(this.distX, this.distY);
-            Vec2 d = new Vec2(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
-            AABB cbb = new AABB();
+            boolean collided = true;
 
-            //System.out.println("Entity pos: " + this.posX + " " + this.posY + " vel: " + this.velX + " " + this.velY);
-            //System.out.println("Entity AABB: " + this.aabb);
-            //System.out.println("Velocity AABB: " + vbb);
+            while (collided)
+            {
+                this.updateAABB();
+                collided = false;
+                AABB vbb = this.getAABB();
+                vbb.expand(this.distX, this.distY);
+                Vec2 d = new Vec2(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+                AABB cbb = new AABB();
 
-            for (int x = 0; x < this.world.width; ++x)
-                for (int y = 0; y < this.world.height; ++y)
-                {
-                    Block b = this.world.getBlock(x, y);
+                //System.out.println("Entity pos: " + this.posX + " " + this.posY + " vel: " + this.velX + " " + this.velY);
+                //System.out.println("Entity AABB: " + this.aabb);
+                //System.out.println("Velocity AABB: " + vbb);
 
-                    if (b != null && b.isCollideable())
+                for (int x = 0; x < this.world.width; ++x)
+                    for (int y = 0; y < this.world.height; ++y)
                     {
-                        if (b.getAABB().intersects(vbb) && !b.getAABB().intersects(this.aabb))
+                        Block b = this.world.getBlock(x, y);
+
+                        if (b != null && b.isCollidable())
                         {
-                            AABB block_bb = b.getAABB();
-                            Vec2 bd = b.getAABB().vectorDistance(this.aabb, this.getVelVec2());
-                            //System.out.println("Block " + b.getAABB() + " intersects VAABB " + vbb + " distance = " + bd);
-                            //b.getAABB().printIntersectionPoints(e.aabb, e.getVelVec2());
+                            if (b.getAABB().intersects(vbb) && !b.getAABB().intersects(this.aabb))
+                            {
+                                AABB block_bb = b.getAABB();
+                                Vec2 bd = b.getAABB().vectorDistance(this.aabb, this.getVelVec2());
+                                //System.out.println("Block " + b.getAABB() + " intersects VAABB " + vbb + " distance = " + bd);
+                                //b.getAABB().printIntersectionPoints(e.aabb, e.getVelVec2());
 
                             /*System.out.println("p00: " + this.aabb.point00() + " " + this.aabb.point00().add(this.getVelVec2()) + ":");
                             Vec2 i00 = Vec2.intersection_lines(block_bb.point01(), block_bb.point11(), this.aabb.point00(), this.aabb.point00().add(this.getVelVec2()));
@@ -114,21 +114,21 @@ public class Entity
                             System.out.println("Distance vec2: " + bd.coordX + " " + bd.coordY);
                             System.out.println("VD: " + bd.coordX + " " + bd.coordY);*/
 
-                            if (bd.lensqr() < d.lensqr())
-                            {
-                                collided = true;
-                                cbb = b.getAABB();
-                                d = bd;
+                                if (bd.lensqr() < d.lensqr())
+                                {
+                                    collided = true;
+                                    cbb = b.getAABB();
+                                    d = bd;
+                                }
                             }
                         }
                     }
-                }
 
-            if (collided) {
+                if (collided) {
                         /*System.out.println("Detected collision:");
                         System.out.println("Block AABB: " + cbb.posX + " " + cbb.posY + " " + cbb.width + " " + cbb.height);
                         System.out.println("VD: " + vd.coordX + " " + vd.coordY);*/
-                this.processCollision(cbb, d);
+                    this.processCollision(cbb, d);
 
                 /*try {
                     TimeUnit.MILLISECONDS.sleep(100);
@@ -140,6 +140,22 @@ public class Entity
                             e.processHorizontalCollision(cbb);
                         else
                             e.processVerticalCollision(cbb);*/
+                }
+            }
+        }
+
+        if (this.isEntityCollidable() && Math.abs(this.velX) < 0.025)
+        {
+            for (Entity e : this.world.getEntities())
+            {
+                if (e != this && e.isEntityCollidable())
+                {
+                    if (this.getAABB().intersects(e.getAABB()))
+                    {
+                        double dx = this.width + e.width - Math.max(this.posX, e.posX) + Math.min(this.posX, e.posX);
+                        this.launchX(dx * dx / this.width / this.height / 10 * Math.signum(this.posX - e.posX)); // 100);
+                    }
+                }
             }
         }
     }
@@ -154,7 +170,7 @@ public class Entity
             {
                 Block b = this.world.getBlock(x, y);
 
-                if (b != null && b.isCollideable() && this.aabb.isStandingOnTop(b.getAABB()))
+                if (b != null && b.isCollidable() && this.aabb.isStandingOnTop(b.getAABB()))
                 {
                     this.isAirborne = false;
                     return;
@@ -168,6 +184,7 @@ public class Entity
         {
             isDead = true;
         }
+
         this.distX = this.velX;
         this.distY = this.velY;
 
@@ -194,8 +211,12 @@ public class Entity
 
         if (this.isAirborne)
         {
-            this.velY -= 0.08;
-            this.velY *= 0.98;
+            if (this.isGravityAffected())
+            {
+                this.velY -= 0.08;
+                this.velY *= 0.98;
+            }
+
             //if (velY > -velMax)
             //{
             //velY -= 9.8 / Game.tick_frequency;
@@ -217,6 +238,17 @@ public class Entity
         this.velY = MathHelper.round(this.velY);
 
         this.updateAABB();
+
+        if (!this.isDead && this.canPickItems())
+        {
+            for (Entity e : this.world.getEntities())
+            {
+                if (e instanceof EntityItem && this.getDistSqr(e) <= 1.25 * 1.25)
+                {
+                    this.pickUp((EntityItem) e);
+                }
+            }
+        }
 
 
         /*if (!world.isAirborne(this) && velY < 0)
@@ -356,6 +388,11 @@ public class Entity
         System.out.println("Vertical collision: " + this.aabb + " " + bb);
     }*/
 
+    public void pickUp(EntityItem e)
+    {
+
+    }
+
     public double getPosX()
     {
         return this.posX;
@@ -412,5 +449,45 @@ public class Entity
     public AABB getAABB()
     {
         return this.aabb.copy();
+    }
+
+    public boolean isBlockCollidable()
+    {
+        return true;
+    }
+
+    public boolean isEntityCollidable()
+    {
+        return true;
+    }
+
+    public boolean isGravityAffected()
+    {
+        return true;
+    }
+
+    public boolean canPickItems()
+    {
+        return false;
+    }
+
+    public ItemStack getDrop()
+    {
+        return null;
+    }
+
+    public double getDistSqr(Entity e)
+    {
+        if (e == null)
+            return Double.NaN;
+
+        double dx = this.posX - e.posX, dy = this.posY + this.height / 2 - e.posY - e.height / 2;
+
+        return dx * dx + dy * dy;
+    }
+
+    public double getDist(Entity e)
+    {
+        return Math.sqrt(this.getDistSqr(e));
     }
 }

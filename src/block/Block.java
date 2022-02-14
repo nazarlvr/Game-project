@@ -1,6 +1,10 @@
 package block;
 
+import entity.EntityItem;
+import item.Item;
+import item.ItemStack;
 import util.AABB;
+import world.World;
 
 public class Block
 {
@@ -8,9 +12,15 @@ public class Block
     public int blockData;
     public AABB aabb;
 
-    public Block(int id)
+    public Block(int id, int data)
     {
         blockId = id;
+        this.blockData = data;
+    }
+
+    public Block(int id)
+    {
+        this(id, 0);
     }
 
     @Override
@@ -29,7 +39,7 @@ public class Block
         return b;
     }
 
-    public boolean isCollideable()
+    public boolean isCollidable()
     {
         return true;
     }
@@ -37,6 +47,19 @@ public class Block
     public void initAABB(int x, int y)
     {
         this.aabb = new AABB(x, y, 1, 1);
+    }
+
+    public void breakBlock(World world, int x, int y)
+    {
+        ItemStack d = this.getDrop();
+
+        if (d != null)
+            world.spawnEntity(new EntityItem(x + 0.5, y + 0.5, d));
+    }
+
+    public ItemStack getDrop()
+    {
+        return null;
     }
 
     public AABB getAABB()

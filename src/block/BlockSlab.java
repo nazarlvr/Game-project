@@ -11,7 +11,7 @@ public class BlockSlab extends Block
     }
 
     @Override
-    public boolean isCollideable()
+    public boolean isCollidable()
     {
         return true;
     }

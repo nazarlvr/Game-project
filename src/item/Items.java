@@ -1,5 +1,6 @@
 package item;
 
+import block.Block;
 import item.Item;
 
 import javax.imageio.ImageIO;
@@ -16,7 +17,8 @@ public class Items {
 //    //public static final Item grass = new ItemGrass(4);
 //    public static final Item bedrock = new Item(5);
 //    //public static final Item stone_slab = new ItemSlab(6);
-    public static final Item beef = new Item(7);
+    public static final Item beef = new Item(1);
+    public static final Item slime = new Item(2);
 
     public static BufferedImage loadTexture(String filepath)
     {
@@ -30,13 +32,13 @@ public class Items {
         return image;
     }
 
+    public static Item getItemFromBlock(Block b)
+    {
+        return new Item(b.blockId, b.blockData);
+    }
+
     public static final Map<Integer, BufferedImage> textures_map = Map.ofEntries(
-//            Map.entry(dirt.itemId, loadTexture("dirt.png")),
-//            Map.entry(stone.itemId, loadTexture("stone.png")),
-//            Map.entry(coal.itemId, loadTexture("coal.png")),
-//            Map.entry(grass.itemId, loadTexture("grass_0.png")),
-//            Map.entry(bedrock.itemId, loadTexture("bedrock.png")),
-//            Map.entry(stone_slab.itemId, loadTexture("stone.png"))
-              Map.entry(beef.itemId, loadTexture("beef.png"))
+            Map.entry(beef.itemId, loadTexture("beef.png")),
+            Map.entry(slime.itemId, loadTexture("slime.png"))
     );
 }
