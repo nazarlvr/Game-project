@@ -67,5 +67,5 @@ public class Block
         return this.aabb;
     }
 
-    public void tick() {}
+    public void tick(World world, int x, int y) {}
 }

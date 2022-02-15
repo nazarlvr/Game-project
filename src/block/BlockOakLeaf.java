@@ -2,28 +2,18 @@ package block;
 
 import item.ItemStack;
 import item.Items;
-import world.World;
 
-public class BlockGrass extends Block
-{
-    public BlockGrass(int id)
+public class BlockOakLeaf extends Block{
+    public BlockOakLeaf(int id)
     {
         super(id);
         this.blockData = 200;
     }
 
     @Override
-    public void tick(World world, int x, int y) {
-        if (this.blockData > 0)
-            --this.blockData;
-
-        super.tick(world, x, y);
-    }
-
-    @Override
     public Block copy()
     {
-        BlockGrass b = new BlockGrass(this.blockId);
+        BlockOakLeaf b = new BlockOakLeaf(this.blockId);
         b.blockData = this.blockData;
         return b;
     }

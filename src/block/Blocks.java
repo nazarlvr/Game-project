@@ -15,6 +15,9 @@ public class Blocks
     public static final Block grass = new BlockGrass(4);
     public static final Block bedrock = new Block(5);
     public static final Block stone_slab = new BlockSlab(6);
+    public static final Block oak_sapling = new BlockSapling(7);
+    public static final Block oak_log = new BlockOakLog(8);
+    public static final Block oak_leaves = new BlockOakLeaf(9);
 
     public static BufferedImage loadTexture(String filepath)
     {
@@ -34,6 +37,9 @@ public class Blocks
             Map.entry(coal.blockId, loadTexture("coal.png")),
             Map.entry(grass.blockId, loadTexture("grass_0.png")),
             Map.entry(bedrock.blockId, loadTexture("bedrock.png")),
-            Map.entry(stone_slab.blockId, loadTexture("stone.png"))
+            Map.entry(stone_slab.blockId, loadTexture("stone.png")),
+            Map.entry(oak_sapling.blockId, loadTexture("oak_sapling.png")),
+            Map.entry(oak_log.blockId, loadTexture("oak_log.png")),
+            Map.entry(oak_leaves.blockId, loadTexture("oak_leaves.png"))
     );
 }

@@ -4,26 +4,27 @@ import item.ItemStack;
 import item.Items;
 import world.World;
 
-public class BlockGrass extends Block
-{
-    public BlockGrass(int id)
+public class BlockOakLog extends Block{
+
+    public BlockOakLog(int id)
     {
         super(id);
-        this.blockData = 200;
     }
 
     @Override
     public void tick(World world, int x, int y) {
-        if (this.blockData > 0)
-            --this.blockData;
-
+        if (world.getBlock(x, y - 1 ) == null)
+        {
+            world.breakBlock(x, y);
+            return;
+        }
         super.tick(world, x, y);
     }
 
     @Override
     public Block copy()
     {
-        BlockGrass b = new BlockGrass(this.blockId);
+        BlockOakLog b = new BlockOakLog(this.blockId);
         b.blockData = this.blockData;
         return b;
     }

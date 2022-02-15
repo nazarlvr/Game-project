@@ -62,6 +62,7 @@ public class World
         this.setBlock(11, 6, Blocks.bedrock);
         this.setBlock(10, 6, Blocks.bedrock);
         this.setBlock(9, 6, Blocks.bedrock);
+        this.setBlock(25, 1, Blocks.oak_sapling);
 
         //this.setBlock(16, 6, Blocks.bedrock);
 
@@ -76,6 +77,7 @@ public class World
             this.setBlock(0, i, i % 2 == 0 ? Blocks.bedrock : Blocks.coal);
             this.setBlock(this.width - 1, i, i % 2 == this.width  % 2 ? Blocks.bedrock : Blocks.coal);
         }
+        this.setBlock(25, 0, Blocks.dirt);
 
         System.out.println("BD: " + this.getBlockData(3,1));
         this.setBlockData(3, 1, 1000);
@@ -117,7 +119,7 @@ public class World
 
                 if (b != null)
                 {
-                    b.tick();
+                    b.tick(this, x, y);
                 }
 
             }
