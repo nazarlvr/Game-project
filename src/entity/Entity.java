@@ -153,7 +153,7 @@ public class Entity
                     if (this.getAABB().intersects(e.getAABB()))
                     {
                         double dx = this.width + e.width - Math.max(this.posX, e.posX) + Math.min(this.posX, e.posX);
-                        this.launchX(dx * dx / this.width / this.height / 10 * Math.signum(this.posX - e.posX)); // 100);
+                        this.launchX(dx * dx / this.width / this.height / 10 * Math.signum(this.posX - e.posX));
                     }
                 }
             }

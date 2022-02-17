@@ -4,6 +4,8 @@ import item.ItemStack;
 import item.Items;
 import world.World;
 
+import java.util.Random;
+
 public class BlockGrass extends Block
 {
     public BlockGrass(int id)

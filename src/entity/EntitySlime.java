@@ -19,7 +19,7 @@ public class EntitySlime extends Entity
     public void tick() {
         super.tick();
 
-        if (!this.isAirborne && this.world.getTime() % 50 == 0)
+        if (!this.isAirborne && Math.random() < 1.0 / 50)
             this.launchY(0.42);
 
         if (this.isAirborne && MathHelper.round(this.velX) == 0)

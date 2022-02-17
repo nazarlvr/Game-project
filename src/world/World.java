@@ -80,7 +80,7 @@ public class World
         this.setBlock(25, 0, Blocks.dirt);
 
         System.out.println("BD: " + this.getBlockData(3,1));
-        this.setBlockData(3, 1, 1000);
+        //this.setBlockData(3, 1, 1000);
         System.out.println("BD: " + this.getBlockData(3,1));
     }
 
@@ -196,6 +196,14 @@ public class World
     public Block getBlock(int x, int y)
     {
         return blocks[x][y];
+    }
+
+    public int getBlockId(int x, int y)
+    {
+        if (blocks[x][y] == null)
+            return 0;
+        else
+            return blocks[x][y].blockId;
     }
 
     public void setBlock(int x, int y, Block b)
