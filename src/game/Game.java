@@ -3,6 +3,7 @@ package game;
 import entity.Entity;
 import entity.EntityItem;
 import entity.EntityPlayer;
+import gui.Gui;
 import item.ItemStack;
 import item.Items;
 import render.RenderWorld;
@@ -31,8 +32,7 @@ public class Game implements KeyListener, MouseListener
     public static final double velMax = collisionPrecision * Game.tick_frequency;
     public JPanel panel;
 
-
-    private boolean W_pressed, A_pressed, D_pressed, R_pressed, ESC_pressed;
+    public boolean W_pressed, A_pressed, D_pressed, R_pressed, ESC_pressed, E_pressed;
 
     public Game()
     {
@@ -139,6 +139,10 @@ public class Game implements KeyListener, MouseListener
         if(e.getKeyCode() == KeyEvent.VK_R)
         {
             this.R_pressed = true;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_E)
+        {
+            this.E_pressed = !E_pressed;
         }
     }
 

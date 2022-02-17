@@ -13,7 +13,7 @@ public class EntityItem extends Entity
         itemStack = null;
         this.width = 0.5;
         this.height = 0.5;
-        this.maxHP = 1;
+        this.maxHP = 1000;
     }
 
     public EntityItem(double x, double y, ItemStack s)

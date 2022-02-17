@@ -19,7 +19,7 @@ public class EntityPlayer extends Entity
     @Override
     public void init() {
         super.init();
-        inv = new Inventory(4);
+        inv = new Inventory(36);
     }
 
     @Override

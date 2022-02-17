@@ -9,7 +9,7 @@ public class BlockSapling extends Block
     public BlockSapling(int id)
     {
         super(id);
-        this.blockData = 200;
+        this.blockData = 100;
     }
 
     @Override

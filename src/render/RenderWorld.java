@@ -5,6 +5,7 @@ import entity.Entity;
 import entity.particle.EntityParticle;
 import entity.EntityPlayer;
 import game.Game;
+import gui.Gui;
 import render.block.RenderBlock;
 import render.entity.RenderEntity;
 import world.World;
@@ -128,8 +129,16 @@ public class RenderWorld extends Canvas
         g.drawLine(xmin, ymin, xmax, ymin);
         g.drawLine(xmin, ymax, xmax, ymax);
         g.drawLine(xmax, ymin, xmax, ymax);
+        if (game.E_pressed == true && game.player != null)
+        {
+            Gui gui = new Gui(game.player.inv);
+            gui.render(g, xmin + 200, ymin , xmax - 400, ymax - 250);
+        }
 
         g.dispose();
+
+
+
         strategy.show();
     }
 }
