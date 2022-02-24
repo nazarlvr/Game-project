@@ -84,6 +84,12 @@ public class RenderManager
         return loadTexture(texture_path_item + filepath);
     }
 
+
+    public static final BufferedImage texture_item_slot = loadTexture("textures/gui/slot.png");
+    public static final BufferedImage texture_gui_chest = loadTexture("textures/gui/inventory_9x8.png");
+    public static final BufferedImage texture_gui_inventory_player = loadTexture("textures/gui/inventory_9x4.png");
+    public static final BufferedImage texture_icon_heart_empty = loadTexture("textures/gui/icon/heart_empty.png");
+    public static final BufferedImage texture_icon_heart_full = loadTexture("textures/gui/icon/heart_full.png");
     public static final Map<String, BufferedImage[]> texture_particle = Map.ofEntries(
             Map.entry("poof", new BufferedImage[]{
                     loadEntityTexture("particle/poof/poof_0.png"),

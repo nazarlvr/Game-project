@@ -28,7 +28,7 @@ public class World
         this.entities = new ArrayList<Entity>();
         this.futEntities = new ArrayList<Entity>();
 
-        this.spawnEntity(new EntityPlayer(16.5, 4));
+        //this.spawnEntity(new EntityPlayer(16.5, 4));
         this.spawnEntity(new EntitySlime(5, 5));
         this.generateTerrain();
     }
@@ -63,6 +63,8 @@ public class World
         this.setBlock(10, 6, Blocks.bedrock);
         this.setBlock(9, 6, Blocks.bedrock);
         this.setBlock(25, 1, Blocks.oak_sapling);
+        this.setBlock(1, 5, Blocks.chest);
+        this.setBlock(2, 6, Blocks.chest);
 
         //this.setBlock(16, 6, Blocks.bedrock);
 
@@ -215,7 +217,7 @@ public class World
         else
         {
             blocks[x][y] = b.copy();
-            blocks[x][y].initAABB(x, y);
+            blocks[x][y].init(x, y);
         }
     }
 
@@ -236,12 +238,20 @@ public class World
 
     public void breakBlock(int x, int y)
     {
-        Block b = this.getBlock(x, y);
+        Block b = this.blocks[x][y];
 
         if (b != null)
         {
             this.setBlock(x, y, null);
             b.breakBlock(this, x, y);
+        }
+    }
+
+    public void interactBlock(EntityPlayer p, int x, int y)
+    {
+        if (this.blocks[x][y] != null)
+        {
+            this.blocks[x][y].interact(this, p, x, y);
         }
     }
 }

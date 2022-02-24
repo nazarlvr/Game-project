@@ -55,7 +55,7 @@ public class BlockSapling extends Block
 
     public ItemStack getDrop()
     {
-        return new ItemStack(Items.beef, this.blockData == 0 ? 5 : 1);
+        return new ItemStack(Items.beef, 5);
     }
 
     @Override

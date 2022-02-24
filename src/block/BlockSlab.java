@@ -25,7 +25,8 @@ public class BlockSlab extends Block
     }
 
     @Override
-    public void initAABB(int x, int y) {
+    public void initAABB(int x, int y)
+    {
         this.aabb = new AABB(x, y, 1, 0.5);
     }
 }

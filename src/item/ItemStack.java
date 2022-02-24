@@ -25,7 +25,7 @@ public class ItemStack
 
     public ItemStack add(ItemStack s)
     {
-        if (s == null || s.item == null || s.stack_size == 0)
+        if (isEmpty(s))
             return null;
 
         if (this.item.equals(s.item))
@@ -46,12 +46,52 @@ public class ItemStack
             return s;
     }
 
+    public ItemStack split()
+    {
+        if (isEmpty(this))
+            return null;
+
+        ItemStack half = this.copy();
+        this.stack_size /= 2;
+        half.stack_size -= this.stack_size;
+
+        if (isEmpty(half))
+            return null;
+
+        return half;
+    }
+
     @Override
     public String toString()
     {
-        if (this.item == null || this.stack_size == 0)
+        if (isEmpty(this))
             return "null";
         return "ItemStack(" + this.item.itemId + ", " + this.stack_size + " / " + this.item.getMaxStackSize() + ")";
+    }
+
+    public static boolean isEmpty(ItemStack s)
+    {
+        if (s == null || s.item == null || s.stack_size == 0)
+            return true;
+        else
+            return false;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o instanceof ItemStack)
+        {
+            if (isEmpty(this) != isEmpty((ItemStack) o))
+                return false;
+
+            if (isEmpty(this))
+                return true;
+
+            return ((ItemStack) o).item.equals(this.item) && ((ItemStack) o).stack_size == this.stack_size;
+        }
+        else
+            return false;
     }
 
     /*public static ItemStack create(Item i, int s)
@@ -64,16 +104,7 @@ public class ItemStack
         return ItemStack.create(i, 1);
     }*/
 
-    /*@Override
-    public boolean equals(Object o)
-    {
-        if (o instanceof Item)
-            return ((Item) o).itemId == this.itemId && ((Item) o).itemData == this.itemData;
-        else
-            return false;
-    }
-
-    public Item copy()
+    /*public Item copy()
     {
         Item b = new Item(this.itemId);
         b.itemData = this.itemData;

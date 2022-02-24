@@ -1,6 +1,7 @@
 package block;
 
 import entity.EntityItem;
+import entity.EntityPlayer;
 import item.Item;
 import item.ItemStack;
 import util.AABB;
@@ -49,12 +50,17 @@ public class Block
         this.aabb = new AABB(x, y, 1, 1);
     }
 
-    public void breakBlock(World world, int x, int y)
+    public void init(int x, int y)
+    {
+        this.initAABB(x, y);
+    }
+
+    public void breakBlock(World w, int x, int y)
     {
         ItemStack d = this.getDrop();
 
         if (d != null)
-            world.spawnEntity(new EntityItem(x + 0.5, y + 0.5, d));
+            w.spawnEntity(new EntityItem(x + 0.5, y + 0.5, d));
     }
 
     public ItemStack getDrop()
@@ -67,5 +73,7 @@ public class Block
         return this.aabb;
     }
 
-    public void tick(World world, int x, int y) {}
+    public void tick(World w, int x, int y) {}
+
+    public void interact(World w, EntityPlayer p, int x, int y) {}
 }
