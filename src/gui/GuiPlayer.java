@@ -3,6 +3,7 @@ package gui;
 import block.BlockChest;
 import entity.EntityPlayer;
 import game.Game;
+import item.ItemStack;
 import render.RenderManager;
 import render.RenderWorld;
 
@@ -11,7 +12,7 @@ import java.awt.*;
 public class GuiPlayer extends Gui
 {
     public EntityPlayer player;
-
+    public int ActiveSlotNumber = 0;
     public GuiPlayer(Game g, EntityPlayer p, int bx, int by, int ex, int ey)
     {
         super(g, bx, by, ex, ey);
@@ -32,6 +33,19 @@ public class GuiPlayer extends Gui
         for (int i = 0; i < player.currentHP; ++i)
         {
             g.drawImage(RenderManager.texture_icon_heart_full, this.minX + i * RenderWorld.guiSize * 9, this.minY, RenderWorld.guiSize * 9, RenderWorld.guiSize * 9, null);
+        }
+        int curX = (this.maxX - this.minX - 182 * RenderWorld.guiSize / 4 * 3) / 2;
+        int curY = this.maxY - 22 * RenderWorld.guiSize / 4 * 3 - 10;
+        g.drawImage(RenderManager.texture_gui_hotbar, curX, curY, 182 * RenderWorld.guiSize / 4 * 3, 22 * RenderWorld.guiSize / 4 * 3, null);
+        g.drawImage(RenderManager.texture_active_slot, curX + RenderWorld.guiSize / 4 * 3 * (ActiveSlotNumber * 20 - 1), curY - RenderWorld.guiSize / 4 * 3, 24 * RenderWorld.guiSize / 4 * 3, 24 * RenderWorld.guiSize / 4 * 3, null);
+
+        for (int i = 0; i < 9; i++) {
+            if (!ItemStack.isEmpty(this.player.inventory.items[i])) {
+                GuiItem gi = new GuiItem(this.player.inventory.items[i].item);
+                int slotSize = 180 * RenderWorld.guiSize / 4 * 3 / 9;
+                int itemSize = 16 * RenderWorld.guiSize / 4 * 3;
+                gi.render(g, curX + RenderWorld.guiSize / 4 * 3  + slotSize * i + (slotSize - itemSize) / 2, curY + RenderWorld.guiSize / 4 * 3 + (slotSize - itemSize) / 2, itemSize, itemSize);
+            }
         }
 
         super.render(g);

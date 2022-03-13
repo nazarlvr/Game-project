@@ -86,6 +86,8 @@ public class RenderManager
 
 
     public static final BufferedImage texture_item_slot = loadTexture("textures/gui/slot.png");
+    public static final BufferedImage texture_gui_hotbar = loadTexture("textures/gui/Bar.png");
+    public static final BufferedImage texture_active_slot = loadTexture("textures/gui/ActiveSlot.png");
     public static final BufferedImage texture_gui_chest = loadTexture("textures/gui/inventory_9x8.png");
     public static final BufferedImage texture_gui_inventory_player = loadTexture("textures/gui/inventory_9x4.png");
     public static final BufferedImage texture_icon_heart_empty = loadTexture("textures/gui/icon/heart_empty.png");

@@ -58,7 +58,7 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener
                 this.player = world.findPlayer();
 
             if (this.currentGui == null && this.player != null)
-                this.currentGui = new GuiPlayer(this, this.player, RenderWorld.minX, RenderWorld.minY, RenderWorld.width, RenderWorld.height);
+                this.currentGui = new GuiPlayer(this, this.player, RenderWorld.minX, RenderWorld.minY, RenderWorld.maxX, RenderWorld.maxY);
 
             world.tick();
             renderWorld.render();
