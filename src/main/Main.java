@@ -28,6 +28,7 @@ public class Main
         //game.renderWorld.addKeyListener(game);
         game.renderWorld.addMouseListener(game);
         game.renderWorld.addMouseMotionListener(game);
+        game.renderWorld.addMouseWheelListener(game);
 
 
         panel.addKeyListener(game);

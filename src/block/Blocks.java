@@ -1,5 +1,7 @@
 package block;
 
+import item.Item;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -31,6 +33,29 @@ public class Blocks
 
         return image;
     }
+
+    public static Block getBlockFromItem(Item i)
+    {
+        if (i.itemId >= 0)
+            return null;
+
+        Block b = blocks_map.get(-i.itemId).copy();
+        b.blockData = i.itemData;
+        return b;
+    }
+
+    public static final Map<Integer, Block> blocks_map = Map.ofEntries(
+            Map.entry(dirt.blockId, dirt),
+            Map.entry(stone.blockId, stone),
+            Map.entry(coal.blockId, coal),
+            Map.entry(grass.blockId, grass),
+            Map.entry(bedrock.blockId, bedrock),
+            Map.entry(stone_slab.blockId, stone_slab),
+            Map.entry(oak_sapling.blockId, oak_sapling),
+            Map.entry(oak_log.blockId, oak_log),
+            Map.entry(oak_leaves.blockId, oak_leaves),
+            Map.entry(chest.blockId, chest)
+    );
 
     public static final Map<Integer, BufferedImage> textures_map = Map.ofEntries(
             Map.entry(dirt.blockId, loadTexture("dirt.png")),

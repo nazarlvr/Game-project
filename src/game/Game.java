@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Game implements KeyListener, MouseListener, MouseMotionListener
+public class Game implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener
 {
     /** True if the game is currently "running", i.e. the game loop is looping */
     public boolean gameRunning = true;
@@ -28,6 +28,7 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener
     public boolean mouse_left_pressed, mouse_right_pressed;
     public boolean mouse_left_clicked, mouse_right_clicked;
     public int mouseX, mouseY;
+    public int mouseWheelRotaion;
 
     public Game()
     {
@@ -100,6 +101,7 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener
         this.SHIFT_clicked = false;
         this.mouse_left_clicked = false;
         this.mouse_right_clicked = false;
+        this.mouseWheelRotaion = 0;
     }
 
     @Override
@@ -237,5 +239,11 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener
     {
         this.mouseX = e.getXOnScreen();
         this.mouseY = e.getYOnScreen();
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e)
+    {
+        this.mouseWheelRotaion += e.getWheelRotation();
     }
 }

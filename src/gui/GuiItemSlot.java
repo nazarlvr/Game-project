@@ -55,10 +55,10 @@ public class GuiItemSlot
 
         if (guiItem != null)
         {
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("TimesRoman", Font.PLAIN, slotWidth * 4 / 18));
-            guiItem.render(g, this.minX + slotWidth / 18, this.minY + slotHeight / 18, slotWidth * 16 / 18, slotHeight * 16 / 18);
-            g.drawString(String.valueOf(this.inventory.items[this.slot].stack_size), this.minX + slotWidth * 2 / 18, this.minY + slotHeight * 16 / 18);
+            //g.setColor(Color.WHITE);
+            //g.setFont(new Font("TimesRoman", Font.PLAIN, slotWidth * 4 / 18));
+            guiItem.render(g, this.minX + slotWidth / 18, this.minY + slotHeight / 18, slotWidth * 16 / 18, slotHeight * 16 / 18, this.inventory.items[this.slot].stack_size);
+            //g.drawString(String.valueOf(this.inventory.items[this.slot].stack_size), this.minX + slotWidth * 2 / 18, this.minY + slotHeight * 16 / 18);
         }
     }
 }

@@ -17,6 +17,11 @@ public class Item
         this(itemId, 0);
     }
 
+    public Item(Block block)
+    {
+        this(-block.blockId, block.blockData);
+    }
+
     @Override
     public boolean equals(Object o)
     {

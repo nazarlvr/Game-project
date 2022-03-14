@@ -34,7 +34,10 @@ public class Items {
 
     public static Item getItemFromBlock(Block b)
     {
-        return new Item(b.blockId, b.blockData);
+        if (b == null || b.blockId <= 0)
+            return null;
+
+        return new Item(b);
     }
 
     public static final Map<Integer, BufferedImage> textures_map = Map.ofEntries(

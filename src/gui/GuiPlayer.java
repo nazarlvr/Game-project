@@ -44,7 +44,7 @@ public class GuiPlayer extends Gui
                 GuiItem gi = new GuiItem(this.player.inventory.items[i].item);
                 int slotSize = 180 * RenderWorld.guiSize / 4 * 3 / 9;
                 int itemSize = 16 * RenderWorld.guiSize / 4 * 3;
-                gi.render(g, curX + RenderWorld.guiSize / 4 * 3  + slotSize * i + (slotSize - itemSize) / 2, curY + RenderWorld.guiSize / 4 * 3 + (slotSize - itemSize) / 2, itemSize, itemSize);
+                gi.render(g, curX + RenderWorld.guiSize / 4 * 3  + slotSize * i + (slotSize - itemSize) / 2, curY + RenderWorld.guiSize / 4 * 3 + (slotSize - itemSize) / 2, itemSize, itemSize, this.player.inventory.items[i].stack_size);
             }
         }
 
@@ -81,6 +81,15 @@ public class GuiPlayer extends Gui
             if (this.game.D_pressed)
             {
                 this.player.launchX(0.05);
+            }
+
+            if (this.game.mouseWheelRotaion != 0)
+            {
+                this.ActiveSlotNumber += this.game.mouseWheelRotaion;
+                this.ActiveSlotNumber %= 9;
+
+                if (this.ActiveSlotNumber < 0)
+                    this.ActiveSlotNumber += 9;
             }
 
             if (this.game.E_clicked)

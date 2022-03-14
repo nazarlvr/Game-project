@@ -4,6 +4,7 @@ import entity.EntityItem;
 import entity.EntityPlayer;
 import item.Item;
 import item.ItemStack;
+import item.Items;
 import util.AABB;
 import world.World;
 
@@ -65,7 +66,7 @@ public class Block
 
     public ItemStack getDrop()
     {
-        return null;
+        return new ItemStack(Items.getItemFromBlock(this),1);
     }
 
     public AABB getAABB()
