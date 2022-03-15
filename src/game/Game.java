@@ -79,6 +79,12 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener, Mo
 
     private void processKeyPresses()
     {
+        if (this.ESC_clicked)
+        {
+            this.gameRunning = false;
+            return;
+        }
+
         if (player == null)
             player = world.findPlayer();
 

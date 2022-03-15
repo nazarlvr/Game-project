@@ -1,6 +1,7 @@
 package gui;
 
 import block.BlockChest;
+import block.Blocks;
 import entity.EntityPlayer;
 import game.Game;
 import item.ItemStack;
@@ -131,5 +132,22 @@ public class GuiPlayer extends Gui
             this.close();
             return;
         }
+            if (this.game.mouse_right_clicked)
+            {
+                //this.player.world.hit(this.game.renderWorld.blockcoordinatesX(this.game.mouseX), this.game.renderWorld.blockcoordinatesY(this.game.mouseY), 1);
+
+                int x = (int)this.game.renderWorld.blockcoordinatesX(this.game.mouseX);
+                int y = (int)this.game.renderWorld.blockcoordinatesY(this.game.mouseY);
+
+                if (this.player.world.getBlock(x, y) == null)
+                    if (this.player.inventory.items[this.ActiveSlotNumber].item != null && this.player.inventory.items[this.ActiveSlotNumber].item.itemId<0&&this.player.inventory.items[this.ActiveSlotNumber].stack_size > 0) {
+                        this.player.world.setBlock(x, y, Blocks.getBlockFromItem(this.player.inventory.items[this.ActiveSlotNumber].item));
+                        this.player.inventory.items[this.ActiveSlotNumber].stack_size--;
+                    }
+
+            }
+
+
+
     }
 }
