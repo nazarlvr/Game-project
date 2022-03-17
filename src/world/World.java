@@ -66,6 +66,8 @@ public class World
         this.setBlock(25, 1, Blocks.oak_sapling);
         this.setBlock(1, 5, Blocks.chest);
         this.setBlock(2, 6, Blocks.chest);
+        this.setBlock(2, 4, Blocks.furnace);
+        this.setBlock(10, 2, Blocks.coal);
 
         //this.setBlock(16, 6, Blocks.bedrock);
 

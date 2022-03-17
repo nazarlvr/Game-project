@@ -21,6 +21,7 @@ public class Blocks
     public static final Block oak_log = new BlockOakLog(8);
     public static final Block oak_leaves = new BlockOakLeaf(9);
     public static final Block chest = new BlockChest(10);
+    public static final Block furnace = new BlockFurnace(11);
 
     public static BufferedImage loadTexture(String filepath)
     {
@@ -54,7 +55,8 @@ public class Blocks
             Map.entry(oak_sapling.blockId, oak_sapling),
             Map.entry(oak_log.blockId, oak_log),
             Map.entry(oak_leaves.blockId, oak_leaves),
-            Map.entry(chest.blockId, chest)
+            Map.entry(chest.blockId, chest),
+            Map.entry(furnace.blockId, furnace)
     );
 
     public static final Map<Integer, BufferedImage> textures_map = Map.ofEntries(
@@ -67,6 +69,7 @@ public class Blocks
             Map.entry(oak_sapling.blockId, loadTexture("oak_sapling.png")),
             Map.entry(oak_log.blockId, loadTexture("oak_log.png")),
             Map.entry(oak_leaves.blockId, loadTexture("oak_leaves.png")),
-            Map.entry(chest.blockId, loadTexture("chest.png"))
+            Map.entry(chest.blockId, loadTexture("chest.png")),
+            Map.entry(furnace.blockId, loadTexture("furnace_front.png"))
     );
 }
