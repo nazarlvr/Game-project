@@ -38,4 +38,10 @@ public class BlockChest extends Block
         b.blockData = this.blockData;
         return b;
     }
+
+    @Override
+    public void breakBlock(World w, int x, int y) {
+        super.breakBlock(w, x, y);
+        this.inventory.dropItems(w, x + 0.5,y + 0.5);
+    }
 }

@@ -60,8 +60,11 @@ public class Block
     {
         ItemStack d = this.getDrop();
 
-        if (d != null)
-            w.spawnEntity(new EntityItem(x + 0.5, y + 0.5, d));
+        if (d != null) {
+            EntityItem ei  = new EntityItem(x + 0.5, y + 0.5, d);
+            ei.velX = (Math.random() - 0.5) * 0.1;
+            w.spawnEntity(ei);
+        }
     }
 
     public ItemStack getDrop()

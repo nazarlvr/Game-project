@@ -51,4 +51,10 @@ public class EntityPlayer extends Entity
             e.itemStack = this.inventory.add(e.itemStack);
         }
     }
+
+    @Override
+    public void onDeath() {
+        super.onDeath();
+        this.inventory.dropItems(this.world, posX ,posY + 1);
+    }
 }

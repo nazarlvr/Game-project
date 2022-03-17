@@ -2,6 +2,7 @@ package render.entity;
 
 import entity.EntityItem;
 import gui.GuiItem;
+import item.ItemStack;
 import item.Items;
 import render.entity.RenderEntity;
 
@@ -16,7 +17,13 @@ public class RenderItem extends RenderEntity
         super(e);
         this.width = e.getWidth();
         this.height = e.getHeight();
-        this.guiItem = new GuiItem(e.itemStack.item);
+        if (!ItemStack.isEmpty(e.itemStack)) {
+            this.guiItem = new GuiItem(e.itemStack.item);
+        }
+        else
+        {
+            this.guiItem = new GuiItem(null);
+        }
     }
 
     @Override

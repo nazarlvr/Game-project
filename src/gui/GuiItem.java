@@ -34,6 +34,7 @@ public class GuiItem
 
     public void render(Graphics g, int x, int y, int w, int h)
     {
+        if (this.item == null) return;
         if (this.item.itemId > 0)
             g.drawImage(this.texture, x, y, w, h, null);
         else

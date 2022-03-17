@@ -1,7 +1,9 @@
 package inventory;
 
+import entity.EntityItem;
 import item.Item;
 import item.ItemStack;
+import world.World;
 
 public class Inventory
 {
@@ -12,6 +14,18 @@ public class Inventory
     {
         this.size = s;
         items = new ItemStack[this.size];
+    }
+
+    public void dropItems(World world, double x, double y)
+    {
+        for (ItemStack i : this.items) {
+            if (!ItemStack.isEmpty(i)) {
+                EntityItem ei = new EntityItem(x, y, i);
+                ei.velX = (Math.random() - 0.5 )* 0.1;
+                world.spawnEntity(ei);
+            }
+        }
+
     }
 
     public ItemStack add(ItemStack st)

@@ -26,7 +26,8 @@ public class Entity
     public int currentHP;
     public boolean isDead;
 
-    public Entity() { }
+    public Entity() { this.velX = 0;
+        this.velY = 0; }
 
     public Entity(double x, double y)
     {
@@ -48,8 +49,8 @@ public class Entity
     public void init()
     {
         this.aabb = new AABB();
-        this.velX = 0;
-        this.velY = 0;
+        //this.velX = 0;
+        //this.velY = 0;
         this.distX = 0;
         this.distY = 0;
         this.isDead = false;
@@ -475,7 +476,10 @@ public class Entity
     {
         return null;
     }
+    public void onDeath ()
+    {
 
+    }
     public double getDistSqr(Entity e)
     {
         if (e == null)

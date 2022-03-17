@@ -1,5 +1,6 @@
 package gui;
 
+import block.Block;
 import block.BlockChest;
 import block.Blocks;
 import entity.EntityPlayer;
@@ -106,22 +107,39 @@ public class GuiPlayer extends Gui
 
             if (this.game.mouse_left_clicked)
             {
-                this.player.world.hit(this.game.renderWorld.blockcoordinatesX(this.game.mouseX), this.game.renderWorld.blockcoordinatesY(this.game.mouseY), 1);
-
-                int x = (int)this.game.renderWorld.blockcoordinatesX(this.game.mouseX);
-                int y = (int)this.game.renderWorld.blockcoordinatesY(this.game.mouseY);
-
-                if (this.player.world.getBlock(x, y) != null)
-                    this.player.world.breakBlock(x, y);
+                int x = (int) this.game.renderWorld.blockcoordinatesX(this.game.mouseX);
+                int y = (int) this.game.renderWorld.blockcoordinatesY(this.game.mouseY);
+                if ((this.player.getPosX() - x)*(this.player.getPosX() - x) + (this.player.getPosY() - y)*(this.player.getPosY() - y) < 5*5) {
+                    this.player.world.hit(this.game.renderWorld.blockcoordinatesX(this.game.mouseX), this.game.renderWorld.blockcoordinatesY(this.game.mouseY), 1);
+                    if (this.player.world.getBlock(x, y) != null)
+                        this.player.world.breakBlock(x, y);
+                }
             }
 
             if (this.game.mouse_right_clicked)
             {
+
                 int x = (int)this.game.renderWorld.blockcoordinatesX(this.game.mouseX);
                 int y = (int)this.game.renderWorld.blockcoordinatesY(this.game.mouseY);
 
-                if (this.player.world.getBlock(x, y) != null)
-                    this.player.world.interactBlock(this.player, x, y);
+                if ((this.player.getPosX() - x)*(this.player.getPosX() - x) + (this.player.getPosY() - y)*(this.player.getPosY() - y) < 5*5)
+                {
+
+                    if (this.player.world.getBlock(x, y) != null)
+                        this.player.world.interactBlock(this.player, x, y);
+                    else {
+                        Block block;
+
+                        if (this.player.inventory.items[this.ActiveSlotNumber].item != null && this.player.inventory.items[this.ActiveSlotNumber].item.itemId < 0 && this.player.inventory.items[this.ActiveSlotNumber].stack_size > 0) {
+                            block = Blocks.getBlockFromItem(this.player.inventory.items[this.ActiveSlotNumber].item).copy();
+                            block.initAABB(x, y);
+                            if (this.player.world.isEmpty(block.aabb)) {
+                                this.player.world.setBlock(x, y, block);
+                                this.player.inventory.items[this.ActiveSlotNumber].stack_size--;
+                            }
+                        }
+                    }
+                }
             }
 
             if (this.player.isDead)
@@ -132,20 +150,7 @@ public class GuiPlayer extends Gui
             this.close();
             return;
         }
-            if (this.game.mouse_right_clicked)
-            {
-                //this.player.world.hit(this.game.renderWorld.blockcoordinatesX(this.game.mouseX), this.game.renderWorld.blockcoordinatesY(this.game.mouseY), 1);
 
-                int x = (int)this.game.renderWorld.blockcoordinatesX(this.game.mouseX);
-                int y = (int)this.game.renderWorld.blockcoordinatesY(this.game.mouseY);
-
-                if (this.player.world.getBlock(x, y) == null)
-                    if (this.player.inventory.items[this.ActiveSlotNumber].item != null && this.player.inventory.items[this.ActiveSlotNumber].item.itemId<0&&this.player.inventory.items[this.ActiveSlotNumber].stack_size > 0) {
-                        this.player.world.setBlock(x, y, Blocks.getBlockFromItem(this.player.inventory.items[this.ActiveSlotNumber].item));
-                        this.player.inventory.items[this.ActiveSlotNumber].stack_size--;
-                    }
-
-            }
 
 
 

@@ -6,6 +6,7 @@ import entity.*;
 import entity.particle.EntityParticle;
 import entity.particle.EntityParticlePoof;
 import item.ItemStack;
+import util.AABB;
 
 import java.util.*;
 
@@ -99,6 +100,19 @@ public class World
         }
     }
 
+    public boolean isEmpty (AABB aabb)
+    {
+        for (Entity ent : entities)
+        {
+            if (ent.getAABB().intersects(aabb))
+            {
+                return false;
+            }
+
+        }
+        return true;
+    }
+
     public EntityPlayer findPlayer()
     {
         for (Entity ent : this.getEntities())
@@ -126,7 +140,7 @@ public class World
 
             }
 
-        if (Math.random() < 1.0 / 50)
+        if (Math.random() < -1.0 / 50)
             this.spawnEntity(new EntitySlime(5,5));
 
 
@@ -142,8 +156,10 @@ public class World
 
                     ItemStack d = e.getDrop();
 
+
                     if (d != null)
                         this.spawnEntity(new EntityItem(e.getPosX(), e.getPosY() + e.getHeight() / 2, d));
+                    e.onDeath();
                 }
             }
 

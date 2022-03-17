@@ -79,7 +79,7 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener, Mo
 
     private void processKeyPresses()
     {
-        if (this.ESC_clicked)
+        if (this.ESC_clicked && this.player == null)
         {
             this.gameRunning = false;
             return;
