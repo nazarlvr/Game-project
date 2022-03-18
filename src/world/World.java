@@ -84,9 +84,9 @@ public class World
         }
         this.setBlock(25, 0, Blocks.dirt);
 
-        System.out.println("BD: " + this.getBlockData(3,1));
+        //System.out.println("BD: " + this.getBlockData(3,1));
         //this.setBlockData(3, 1, 1000);
-        System.out.println("BD: " + this.getBlockData(3,1));
+        //System.out.println("BD: " + this.getBlockData(3,1));
     }
 
 
