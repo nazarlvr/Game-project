@@ -2,10 +2,14 @@ package entity;
 
 import game.Game;
 import inventory.Inventory;
+import inventory.InventoryCrafting;
+import item.ItemStack;
+import item.Items;
 
 public class EntityPlayer extends Entity
 {
     public Inventory inventory;
+    public InventoryCrafting inventoryCrafting;
     public Game game;
 
     public EntityPlayer(double x, double y, Game g)
@@ -20,7 +24,8 @@ public class EntityPlayer extends Entity
     @Override
     public void init() {
         super.init();
-        inventory = new Inventory(36);
+        this.inventory = new Inventory(36);
+        this.inventoryCrafting = new InventoryCrafting(4);
     }
 
     @Override
@@ -35,7 +40,9 @@ public class EntityPlayer extends Entity
         }
         System.out.println("}");*/
 
+        this.inventoryCrafting.update_input(this.inventory);
         super.tick();
+        this.inventoryCrafting.update_output(this.inventory);
     }
 
     @Override

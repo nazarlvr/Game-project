@@ -37,7 +37,7 @@ public class World
     public void generateTerrain()
     {
         this.setBlock(0, 0, Blocks.dirt);
-        this.setBlock(0, 1, Blocks.coal);
+        this.setBlock(0, 1, Blocks.coal_ore);
         this.setBlock(1, 0, Blocks.stone);
         this.setBlock(1, 1, Blocks.dirt);
         this.setBlock(1, 2, Blocks.grass);
@@ -67,20 +67,20 @@ public class World
         this.setBlock(1, 5, Blocks.chest);
         this.setBlock(2, 6, Blocks.chest);
         this.setBlock(2, 4, Blocks.furnace);
-        this.setBlock(10, 2, Blocks.coal);
+        this.setBlock(10, 2, Blocks.coal_ore);
 
         //this.setBlock(16, 6, Blocks.bedrock);
 
         for (int i = 0; i < this.width; ++i)
         {
-            this.setBlock(i, 0, i % 2 == 0 ? Blocks.bedrock : Blocks.coal);
-            this.setBlock(i, this.height - 1, i % 2 == this.height  % 2 ? Blocks.bedrock : Blocks.coal);
+            this.setBlock(i, 0, i % 2 == 0 ? Blocks.bedrock : Blocks.coal_ore);
+            this.setBlock(i, this.height - 1, i % 2 == this.height  % 2 ? Blocks.bedrock : Blocks.coal_ore);
         }
 
         for (int i = 0; i < this.height; ++i)
         {
-            this.setBlock(0, i, i % 2 == 0 ? Blocks.bedrock : Blocks.coal);
-            this.setBlock(this.width - 1, i, i % 2 == this.width  % 2 ? Blocks.bedrock : Blocks.coal);
+            this.setBlock(0, i, i % 2 == 0 ? Blocks.bedrock : Blocks.coal_ore);
+            this.setBlock(this.width - 1, i, i % 2 == this.width  % 2 ? Blocks.bedrock : Blocks.coal_ore);
         }
         this.setBlock(25, 0, Blocks.dirt);
 

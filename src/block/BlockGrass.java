@@ -30,6 +30,7 @@ public class BlockGrass extends Block
         return b;
     }
 
+    @Override
     public ItemStack getDrop()
     {
         return new ItemStack(Items.beef, this.blockData == 0 ? 5 : 1);

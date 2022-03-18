@@ -70,33 +70,83 @@ public class GuiInventory extends Gui
                     }
                     else if (ItemStack.isEmpty(this.stack))
                     {
-                        if (this.game.SHIFT_pressed)
-                            this.stack = s.inventory.items[s.slot].split();
-                        else
+                        if (s.output)
                         {
-                            this.stack = s.inventory.items[s.slot];
-                            s.inventory.items[s.slot] = null;
+                            if (s.input)
+                            {
+                                if (this.game.SHIFT_pressed)
+                                    this.stack = s.inventory.items[s.slot].split();
+                                else
+                                {
+                                    this.stack = s.inventory.items[s.slot];
+                                    s.inventory.items[s.slot] = null;
+                                }
+                            }
+                            else
+                            {
+                                if (this.game.SHIFT_pressed)
+                                {
+                                    this.stack = s.inventory.items[s.slot];
+                                    s.inventory.items[s.slot] = null;
+                                }
+                                else
+                                {
+                                    this.stack = new ItemStack(s.inventory.items[s.slot].item, 1);
+                                    --s.inventory.items[s.slot].stack_size;
+                                }
+                            }
                         }
                     }
                     else if (ItemStack.isEmpty(s.inventory.items[s.slot]))
                     {
-                        if (this.game.SHIFT_pressed)
-                            s.inventory.items[s.slot] = this.stack.split();
-                        else
+                        if (s.input)
                         {
-                            s.inventory.items[s.slot] = this.stack;
-                            this.stack = null;
+                            if (s.output)
+                            {
+                                if (this.game.SHIFT_pressed)
+                                    s.inventory.items[s.slot] = this.stack.split();
+                                else
+                                {
+                                    s.inventory.items[s.slot] = this.stack;
+                                    this.stack = null;
+                                }
+                            }
+                            else
+                            {
+                                if (this.game.SHIFT_pressed)
+                                {
+                                    s.inventory.items[s.slot] = this.stack;
+                                    this.stack = null;
+                                }
+                                else
+                                {
+                                    s.inventory.items[s.slot] = new ItemStack(this.stack.item, 1);
+                                    --this.stack.stack_size;
+                                }
+                            }
                         }
                     }
                     else if (s.inventory.items[s.slot].item.equals(this.stack.item))
                     {
-                        this.stack = s.inventory.items[s.slot].add(this.stack);
+                        if (s.input)
+                        {
+                            if (s.output)
+                                this.stack = s.inventory.items[s.slot].add(this.stack);
+                            else
+                            {
+                                ++s.inventory.items[s.slot].stack_size;
+                                --this.stack.stack_size;
+                            }
+                        }
                     }
                     else
                     {
-                        ItemStack st = s.inventory.items[s.slot];
-                        s.inventory.items[s.slot] = stack;
-                        stack = st;
+                        if (s.input && s.output)
+                        {
+                            ItemStack st = s.inventory.items[s.slot];
+                            s.inventory.items[s.slot] = stack;
+                            stack = st;
+                        }
                     }
                 }
             }

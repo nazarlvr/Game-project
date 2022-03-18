@@ -25,7 +25,6 @@ public class Inventory
                 world.spawnEntity(ei);
             }
         }
-
     }
 
     public ItemStack add(ItemStack st)
@@ -55,5 +54,44 @@ public class Inventory
         }
 
         return s;
+    }
+
+    public int countItem(Item i)
+    {
+        if (i == null || i.itemId == 0)
+            return 0;
+
+        int c = 0;
+
+        for (ItemStack is : this.items)
+            if (is != null && i.equals(is.item))
+                c += is.stack_size;
+
+        return c;
+    }
+
+    public void remove(ItemStack is)
+    {
+        ItemStack s = is.copy();
+
+        for (int i = 0; i < this.size; ++i)
+        {
+            if (s.stack_size == 0)
+                return;
+
+            if (!ItemStack.isEmpty(this.items[i]) && this.items[i].item.equals(s.item))
+            {
+                if (s.stack_size <= this.items[i].stack_size)
+                {
+                    this.items[i].stack_size -= s.stack_size;
+                    return;
+                }
+                else
+                {
+                    s.stack_size -= this.items[i].stack_size;
+                    this.items[i].stack_size = 0;
+                }
+            }
+        }
     }
 }

@@ -19,6 +19,7 @@ public class Items {
 //    //public static final Item stone_slab = new ItemSlab(6);
     public static final Item beef = new Item(1);
     public static final Item slime = new Item(2);
+    public static final Item coal = new Item(3);
 
     public static BufferedImage loadTexture(String filepath)
     {
@@ -42,6 +43,7 @@ public class Items {
 
     public static final Map<Integer, BufferedImage> textures_map = Map.ofEntries(
             Map.entry(beef.itemId, loadTexture("beef.png")),
-            Map.entry(slime.itemId, loadTexture("slime.png"))
+            Map.entry(slime.itemId, loadTexture("slime.png")),
+            Map.entry(coal.itemId, loadTexture("coal.png"))
     );
 }

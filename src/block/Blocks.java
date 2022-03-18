@@ -13,7 +13,7 @@ public class Blocks
     public static final String textures_path = "textures/blocks/";
     public static final Block dirt = new Block(1);
     public static final Block stone = new Block(2);
-    public static final Block coal = new Block(3);
+    public static final Block coal_ore = new BlockOre(3);
     public static final Block grass = new BlockGrass(4);
     public static final Block bedrock = new Block(5);
     public static final Block stone_slab = new BlockSlab(6);
@@ -48,7 +48,7 @@ public class Blocks
     public static final Map<Integer, Block> blocks_map = Map.ofEntries(
             Map.entry(dirt.blockId, dirt),
             Map.entry(stone.blockId, stone),
-            Map.entry(coal.blockId, coal),
+            Map.entry(coal_ore.blockId, coal_ore),
             Map.entry(grass.blockId, grass),
             Map.entry(bedrock.blockId, bedrock),
             Map.entry(stone_slab.blockId, stone_slab),
@@ -62,7 +62,7 @@ public class Blocks
     public static final Map<Integer, BufferedImage> textures_map = Map.ofEntries(
             Map.entry(dirt.blockId, loadTexture("dirt.png")),
             Map.entry(stone.blockId, loadTexture("stone.png")),
-            Map.entry(coal.blockId, loadTexture("coal.png")),
+            Map.entry(coal_ore.blockId, loadTexture("coal.png")),
             Map.entry(grass.blockId, loadTexture("grass_0.png")),
             Map.entry(bedrock.blockId, loadTexture("bedrock.png")),
             Map.entry(stone_slab.blockId, loadTexture("stone.png")),

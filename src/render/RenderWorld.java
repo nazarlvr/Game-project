@@ -23,7 +23,7 @@ public class RenderWorld extends Canvas
     public double playerX;
     public double playerY;
     public static final int screenX = 20, screenY = 10;
-    public static final int minX = 0, maxX = Toolkit.getDefaultToolkit().getScreenSize().width, minY = 150, maxY = Toolkit.getDefaultToolkit().getScreenSize().height;
+    public static final int minX = 0, maxX = Toolkit.getDefaultToolkit().getScreenSize().width, minY = 0, maxY = Toolkit.getDefaultToolkit().getScreenSize().height;
     public static final int width = maxX - minX, height = maxY - minY;
     public static final int dx = (maxX - minX) / screenX, dy = (maxY - minY) / screenY;
     public static final int guiSize = 4;
@@ -70,29 +70,16 @@ public class RenderWorld extends Canvas
 
         Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
         g.clearRect(0,0, getWidth(), getHeight());
-
-
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 26));
-        g.drawString("Ticks: " + wt,40,40);
-        g.drawString("Time: " + at, 60, 60);
-        g.drawString("Ticks per second: " + tf,80,80);
-
-        g.drawString("Shift: " + game.SHIFT_pressed,240,40);
-
-
         setBackground(Color.CYAN);
-        setForeground(Color.RED);
+        setForeground(Color.BLACK);
 
-        //g.drawImage(RenderEntity.loadTexture("player/Player.jpg"), 0, 0, 50, 50, null);
-
-        g.drawString("Mouse " + this.blockcoordinatesX(this.game.mouseX) + " " + this.blockcoordinatesY(this.game.mouseY),100,100);
         startX = Math.min(Math.max(0, (playerX - screenX/2)), world.width - screenX);
         startY = Math.min(Math.max(0, playerY - screenY/2), world.height - screenY);
         finalX = startX + screenX;
         finalY = startY + screenY;
 
         g.clipRect(minX, minY, maxX, maxY);
-        //g.clipRect(0, 0, world.width, world.height);
+
         for (int x = (int) Math.floor(startX); x < Math.ceil(finalX) ; ++x)
         {
             for (int y = (int) Math.floor(startY); y < Math.ceil(finalY); ++y)
@@ -129,26 +116,26 @@ public class RenderWorld extends Canvas
 
         g.setClip(null);
 
+        if (this.game.currentGui != null)
+        {
+            this.game.currentGui.render(g);
+        }
+
+        g.setColor(Color.RED);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 26));
+        g.drawString("Ticks: " + wt,40,40);
+        g.drawString("Time: " + at, 60, 60);
+        g.drawString("Ticks per second: " + tf,80,80);
+        g.drawString("Shift: " + game.SHIFT_pressed,240,40);
+
+        g.drawString("Mouse " + this.blockcoordinatesX(this.game.mouseX) + " " + this.blockcoordinatesY(this.game.mouseY),100,100);
 
         g.drawLine(minX, minY, minX, maxY);
         g.drawLine(minX, minY, maxX, minY);
         g.drawLine(minX, maxY, maxX, maxY);
         g.drawLine(maxX, minY, maxX, maxY);
 
-        if (this.game.currentGui != null)
-        {
-            this.game.currentGui.render(g);
-        }
-
-        /*if (game.E_pressed == true && game.player != null)
-        {
-
-        }*/
-
         g.dispose();
-
-
-
         strategy.show();
     }
 }

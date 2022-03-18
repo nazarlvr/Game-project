@@ -15,8 +15,10 @@ public class GuiItemSlot
     protected final Inventory inventory;
     protected final int slot;
     protected final int minX, minY, maxX, maxY;
+    protected final boolean input;
+    protected final boolean output;
 
-    public GuiItemSlot(Inventory i, int s, int bx, int by, int ex, int ey)
+    public GuiItemSlot(Inventory i, int s, int bx, int by, int ex, int ey, boolean in, boolean out)
     {
         this.inventory = i;
         this.slot = s;
@@ -24,11 +26,18 @@ public class GuiItemSlot
         this.minY = by;
         this.maxX = ex;
         this.maxY = ey;
+        this.input = in;
+        this.output = out;
 
         /*if (this.inventory.items[this.slot] != null && this.inventory.items[this.slot].item != null && this.inventory.items[this.slot].stack_size != 0)
             this.guiItem = new GuiItem(this.inventory.items[this.slot].item);
         else
             this.guiItem = null;*/
+    }
+
+    public GuiItemSlot(Inventory i, int s, int bx, int by, int ex, int ey)
+    {
+        this(i, s, bx, by, ex, ey, true, true);
     }
 
     /*public GuiItemSlot(Inventory i, int s)
