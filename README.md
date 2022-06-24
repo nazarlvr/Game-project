@@ -25,6 +25,7 @@ To launch application run main method in main/Main.java class.
 ### Developers
 
 Mykhailo Shvets (https://github.com/somerandomsymbols)
+
 Nazar Lavrentiuk (https://github.com/nazarlvr)
 
 
