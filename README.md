@@ -8,7 +8,7 @@ Terraria Clone game is open-source game written in Java, using LibGDX library.
 Clone the repo:
 
 ```bash
-git clone https://github.com/nazarlvr/GameProject.git
+git clone https://github.com/nazarlvr/Game-project.git
 cd GameProject
 ```
 
