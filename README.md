@@ -20,6 +20,7 @@ Compile project:
 
 ### Running
 
+To launch application run main method in main/Main.java class.
 
 ### Developers
 
