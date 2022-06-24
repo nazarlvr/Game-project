@@ -21,7 +21,10 @@ Compile project:
 ### Running
 
 
+### Developers
 
+Mykhailo Shvets (https://github.com/somerandomsymbols)
+Nazar Lavrentiuk (https://github.com/nazarlvr)
 
 
 ### License
