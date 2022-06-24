@@ -1,7 +1,7 @@
 # Terraria Clone game
 
 
-Terraria Clone game is open-source game written in Java, using LibGDX library.
+Terraria Clone game is open-source game written in Java, using JFrame library.
 
 ### Building
 
